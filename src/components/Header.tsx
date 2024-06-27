@@ -6,7 +6,7 @@ const Header: React.FC = () => {
     <header className="bg-base-100 shadow-lg">
       <div className="navbar container mx-auto">
         <div className="flex-1">
-          <Link href="/" className="btn btn-ghost normal-case text-xl">ButterBlinks</Link>
+          <Link href="/" className="btn btn-ghost normal-case text-xl">Your Platform Name</Link>
         </div>
         <div className="flex-none hidden lg:block">
           <ul className="menu menu-horizontal px-1">
