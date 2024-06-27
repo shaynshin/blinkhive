@@ -34,7 +34,7 @@ const Testimonials: React.FC = () => {
           {testimonials.map((testimonial, index) => (
             <div key={index} className="card bg-base-100 shadow-xl">
               <div className="card-body">
-                <p>"{testimonial.text}"</p>
+                <p>&quot;{testimonial.text}&quot;</p>
                 <div className="card-actions justify-end">
                   <div className="font-bold">{testimonial.name}</div>
                   <div className="text-sm opacity-50">{testimonial.role}</div>
