@@ -6,8 +6,8 @@ const Header: React.FC = () => {
     <header className="bg-base-100 shadow-lg">
       <div className="navbar container mx-auto">
         <div className="flex-1">
-          <Link href="/" className="btn btn-ghost normal-case text-xl">
-            <span className="text-4xl">🦦</span> Beaverblink
+          <Link href="/" className="btn btn-ghost normal-case text-2xl font-bold">
+            Blinkhive
           </Link>
         </div>
         <div className="flex-none hidden lg:block">

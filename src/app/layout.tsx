@@ -5,9 +5,9 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Beaverblink - Web3 Affiliate Marketing Hub",
+  title: "Blinkhive - Web3 Affiliate Marketing Hub",
   description:
-    "Beaverblink is a leading affiliate marketing network with its own marketplace. We empower affiliates and brands to grow their sales on the blockchain.",
+    "Blinkhive is a leading affiliate marketing network with its own marketplace. We empower affiliates and brands to grow their sales on the blockchain.",
 };
 
 export default function RootLayout({

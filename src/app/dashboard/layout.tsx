@@ -60,9 +60,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
               </svg>
             </label>
           </div>
-          <div className="flex-1 px-2 mx-2 text-xl font-md">
-            <span className="text-4xl"> 🦦 </span> &nbsp; Beaverblink
-          </div>
+          <div className="flex-1 px-2 mx-2 text-2xl font-medium">Blinkhive</div>
           <div className="flex-none">
             <ul className="menu menu-horizontal px-1">
               <li>
