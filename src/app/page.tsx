@@ -1,13 +1,13 @@
-import Benefits from "@/components/Benefits";
-import CTA from "@/components/CTA";
-import FAQ from "@/components/FAQ";
-import Features from "@/components/Features";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import Hero from "@/components/Hero";
-import HowItWorks from "@/components/HowItWorks";
-import TechShowcase from "@/components/TechShowcase";
-import Testimonials from "@/components/Testimonials";
+import Benefits from "@/components/landing/Benefits";
+import CTA from "@/components/landing/CTA";
+import FAQ from "@/components/landing/FAQ";
+import Features from "@/components/landing/Features";
+import Footer from "@/components/landing/Footer";
+import Header from "@/components/landing/Header";
+import Hero from "@/components/landing/Hero";
+import HowItWorks from "@/components/landing/HowItWorks";
+import TechShowcase from "@/components/landing/TechShowcase";
+import Testimonials from "@/components/landing/Testimonials";
 import React from "react";
 
 const LandingPage: React.FC = () => {
