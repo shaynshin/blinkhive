@@ -31,11 +31,17 @@ const ProductBrowse = () => {
         body: JSON.stringify({ productId }),
       });
 
+      if (response.status !== 200) {
+        throw "failed to save";
+      }
+
       const { blink } = (await response.json()) as { blink: Blink };
       if (blink) setBlinks((prevBlinks) => [...prevBlinks, blink]);
     } catch (error) {
+      alert(
+        'ERROR: Save your Solana wallet address under "Wallet Settings" before creating blinks!'
+      );
       console.error("Error saving changes:", error);
-      // You might want to show an error message to the user here
     } finally {
       setIsButtonLoading(false);
     }
@@ -164,7 +170,7 @@ const ProductCard: React.FC<{
   const handleCopyClick = async (textToCopy: string) => {
     try {
       const currentDomain = `${window.location.protocol}//${window.location.host}`;
-      const fullTextToCopy = `${currentDomain}/buy/${textToCopy}`
+      const fullTextToCopy = `${currentDomain}/buy/${textToCopy}`;
       await navigator.clipboard.writeText(fullTextToCopy);
       alert("Copied to clipboard!");
     } catch (err) {
