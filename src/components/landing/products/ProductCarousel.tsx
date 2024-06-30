@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
+import { Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -13,16 +13,30 @@ import Link from "next/link";
 const ProductCarousel = ({ products: products }: { products: Product[] }) => {
   return (
     <Swiper
-      modules={[Navigation, Pagination]}
+      modules={[Autoplay, Navigation]}
       spaceBetween={20}
-      slidesPerView={4}
+      slidesPerView={1}
       navigation
-      pagination={{ clickable: false }}
+      autoplay={{
+        delay: 2000,
+        disableOnInteraction: false,
+      }}
+      breakpoints={{
+        768: {
+          slidesPerView: 2,
+        },
+        1024: {
+          slidesPerView: 3,
+        },
+        1280: {
+          slidesPerView: 4,
+        },
+      }}
     >
       {products.map((product) => (
         <SwiperSlide key={product.id}>
           <div className="card card-compact bg-base-300 shadow-2xl border border-base-100 hover:shadow-3xl transition-shadow duration-300">
-            <figure>
+            <figure className="flex-shrink-0">
               <a href={product.gumroadUrl} target="_blank" className="w-full">
                 <Image
                   src={product.imageUrl}
@@ -33,18 +47,22 @@ const ProductCarousel = ({ products: products }: { products: Product[] }) => {
                 />
               </a>
             </figure>
-            <div className="card-body">
+            <div className="card-body flex-grow flex flex-col">
               <a
                 href={product.gumroadUrl}
                 target="_blank"
                 className="link link-hover"
               >
-                <h2 className="card-title text-base">{product.name}</h2>
+                <h2 className="card-title text-base line-clamp-2">
+                  {product.name}
+                </h2>
               </a>
               <div className="text-xs -mt-1.5 mb-0.5">
                 {"⭐".repeat(Math.round(product.rating))}
               </div>
-              <p className="text-sm text-gray-500">by {product.seller}</p>
+              <p className="text-sm text-gray-500 line-clamp-1">
+                by {product.seller}
+              </p>
               <div className="flex justify-between items-center mt-2">
                 <span className="font-bold">${product.price.toFixed(2)}</span>
                 <div className="card-actions justify-end">
