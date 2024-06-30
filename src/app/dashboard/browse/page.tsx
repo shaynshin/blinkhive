@@ -163,7 +163,9 @@ const ProductCard: React.FC<{
   const [isButtonLoading, setIsButtonLoading] = useState<boolean>(false);
   const handleCopyClick = async (textToCopy: string) => {
     try {
-      await navigator.clipboard.writeText(textToCopy);
+      const currentDomain = `${window.location.protocol}//${window.location.host}`;
+      const fullTextToCopy = `${currentDomain}/buy/${textToCopy}`
+      await navigator.clipboard.writeText(fullTextToCopy);
       alert("Copied to clipboard!");
     } catch (err) {
       console.error("Failed to copy: ", err);
@@ -171,7 +173,7 @@ const ProductCard: React.FC<{
   };
 
   return (
-    <div className="card card-compact bg-neutral shadow-2xl hover:shadow-3xl transition-shadow duration-300">
+    <div className="card card-compact bg-base-300 shadow-2xl border border-base-100 hover:shadow-3xl transition-shadow duration-300">
       <figure>
         <Image
           src={product.imageUrl}
