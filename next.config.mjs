@@ -26,11 +26,6 @@ const nextConfig = {
             key: "Access-Control-Allow-Methods",
             value: "GET, OPTIONS",
           },
-          // Allows for specific headers accepted (These are a few standard ones)
-          {
-            key: "Access-Control-Allow-Headers",
-            value: "Content-Type, Authorization",
-          },
         ],
       },
     ];
