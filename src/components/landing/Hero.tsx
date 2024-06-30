@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 
 const Hero: React.FC = () => {
@@ -7,8 +8,8 @@ const Hero: React.FC = () => {
         <div className="max-w-md">
           <h1 className="text-5xl font-bold">Revolutionize Your Digital Product Sales</h1>
           <p className="py-6">Blockchain-Powered Affiliate Marketing for the Digital Age</p>
-          <button className="btn btn-primary mr-2">For Merchants</button>
-          <button className="btn btn-secondary">For Affiliates</button>
+          <Link href="/dashboard" className="btn btn-primary mr-2">For Merchants</Link>
+          <Link href="/dashboard" className="btn btn-secondary mr-2">For Affiliates</Link>
         </div>
       </div>
     </div>

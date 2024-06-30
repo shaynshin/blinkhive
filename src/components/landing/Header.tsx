@@ -30,8 +30,8 @@ const Header: React.FC = () => {
           </ul>
         </div>
         <div className="flex-none">
-          <Link href="/signup" className="btn btn-primary">
-            Sign Up
+          <Link href="/login" className="btn btn-primary">
+            Get Started
           </Link>
         </div>
         <div className="flex-none lg:hidden">
