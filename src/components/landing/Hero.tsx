@@ -3,7 +3,7 @@ import React from 'react';
 
 const Hero: React.FC = () => {
   return (
-    <div className="hero min-h-screen bg-base-200">
+    <div className="hero min-h-[calc(100vh-4.5rem)] bg-base-200">
       <div className="hero-content text-center">
         <div className="max-w-md">
           <h1 className="text-5xl font-bold">Revolutionize Your Digital Product Sales</h1>

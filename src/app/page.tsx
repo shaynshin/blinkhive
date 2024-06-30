@@ -6,6 +6,7 @@ import Footer from "@/components/landing/Footer";
 import Header from "@/components/landing/Header";
 import Hero from "@/components/landing/Hero";
 import HowItWorks from "@/components/landing/HowItWorks";
+import Products from "@/components/landing/products/Products";
 import TechShowcase from "@/components/landing/TechShowcase";
 import Testimonials from "@/components/landing/Testimonials";
 import React from "react";
@@ -15,6 +16,7 @@ const LandingPage: React.FC = () => {
     <div>
       <Header />
       <Hero />
+      <Products />
       <Features />
       <HowItWorks />
       <Benefits />

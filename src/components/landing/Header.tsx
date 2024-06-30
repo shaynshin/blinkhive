@@ -3,10 +3,13 @@ import Link from "next/link";
 
 const Header: React.FC = () => {
   return (
-    <header className="bg-base-100 shadow-lg">
+    <header className="bg-base-100 shadow-lg h-18">
       <div className="navbar container mx-auto">
         <div className="flex-1">
-          <Link href="/" className="btn btn-ghost normal-case text-2xl font-bold">
+          <Link
+            href="/"
+            className="btn btn-ghost normal-case text-2xl font-bold"
+          >
             Blinkhive
           </Link>
         </div>
