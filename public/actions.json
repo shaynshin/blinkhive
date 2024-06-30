@@ -1,8 +1,8 @@
 {
-    "rules": [
-      {
-        "pathPattern": "/buy/**",
-        "apiPath": "/api/action/**"
-      }
-    ]
-  }
+  "rules": [
+    {
+      "pathPattern": "/buy/**",
+      "apiPath": "/api/action/**"
+    }
+  ]
+}
