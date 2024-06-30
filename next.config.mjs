@@ -7,26 +7,11 @@ const nextConfig = {
       { hostname: "assets.gumroad.com" },
     ],
   },
-  async headers() {
+  async rewrites() {
     return [
       {
-        // Routes this applies to
-        source: "/actions.json",
-        // Headers
-        headers: [
-          // Allow for specific domains to have access or * for all
-          {
-            key: "Access-Control-Allow-Origin",
-            value: "*",
-            // DOES NOT WORK
-            // value: process.env.ALLOWED_ORIGIN,
-          },
-          // Allows for specific methods accepted
-          {
-            key: "Access-Control-Allow-Methods",
-            value: "GET, OPTIONS",
-          },
-        ],
+        source: '/actions.json',
+        destination: '/api/action/json',
       },
     ];
   },
