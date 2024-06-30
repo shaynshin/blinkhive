@@ -23,12 +23,19 @@ export async function GET(req: Request) {
 
     const { data, error } = await supabase
       .from("blinks")
-      .select("id, product_id")
+      .select("id, products (*)")
       .eq("user_email", userEmail);
 
-    const blinks = (data || []).map((item) => ({
+    const blinks = (data || []).map((item: any) => ({
       id: item.id,
-      productId: item.product_id,
+      productId: item.products.id,
+      productName: item.products.name,
+      productPrice: item.products.price,
+      productRating: item.products.rating,
+      productSeller: item.products.seller,
+      productImageUrl: item.products.image_url,
+      productCommission: item.products.commission,
+      productGumroadUrl: item.products.gumroad_url,
     }));
 
     if (error) {

@@ -15,7 +15,7 @@ type NavItems = {
 const navItems: NavItems = {
   merchant: [
     {
-      name: "Products",
+      name: "Manage Products",
       path: "/dashboard/products",
       description: "Manage your products",
     },
@@ -32,7 +32,7 @@ const navItems: NavItems = {
       description: "Find products to promote",
     },
     {
-      name: "My Blinks",
+      name: "Manage Blinks",
       path: "/dashboard/blinks",
       description: "Manage your affiliate blinks",
     },

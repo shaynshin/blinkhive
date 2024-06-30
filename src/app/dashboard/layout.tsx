@@ -17,13 +17,13 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const navItems = {
     merchant: [
       { name: "Dashboard", path: "/dashboard" },
-      { name: "Products", path: "/dashboard/products" },
+      { name: "Manage Products", path: "/dashboard/products" },
       { name: "Merchant Analytics", path: "/dashboard/analytics/merchant" },
     ],
     affiliate: [
       { name: "Dashboard", path: "/dashboard" },
       { name: "Browse Products", path: "/dashboard/browse" },
-      { name: "My Blinks", path: "/dashboard/blinks" },
+      { name: "Manage Blinks", path: "/dashboard/blinks" },
       { name: "Wallet Settings", path: "/dashboard/settings" },
       { name: "Analytics", path: "/dashboard/analytics/affiliate" },
     ],
