@@ -171,24 +171,27 @@ const ProductCard: React.FC<{
   };
 
   return (
-    <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
-      <figure className="px-4 pt-4">
+    <div className="card card-compact bg-neutral shadow-2xl hover:shadow-3xl transition-shadow duration-300">
+      <figure>
         <Image
           src={product.imageUrl}
           alt={product.name}
           width={300}
           height={200}
-          className="rounded-xl object-cover h-48 w-full"
+          className="rounded-y-xl object-cover h-48 w-full"
         />
       </figure>
       <div className="card-body">
-        <h2 className="card-title text-lg">{product.name}</h2>
-        <p className="text-sm text-gray-500">{product.seller}</p>
+        <h2 className="card-title text-base">{product.name}</h2>
+        <p className="text-sm text-gray-500">by {product.seller}</p>
         <div className="flex justify-between items-center mt-2">
-          <span className="text-xl font-bold">${product.price.toFixed(2)}</span>
-          <span className="badge badge-accent">
-            {product.commission * 100}% commission
-          </span>
+          <span className="font-bold">${product.price.toFixed(2)}</span>
+          <div className="card-actions justify-end">
+            <div className="badge badge-outline">
+              {product.commission * 80}%
+              <span className="text-xs"> &nbsp;commission</span>
+            </div>
+          </div>
         </div>
         <div className="card-actions justify-start mt-4">
           {product.blinkId ? (
