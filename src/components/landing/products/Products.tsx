@@ -3,14 +3,9 @@ import { GetServerSideProps } from "next";
 import { Product } from "@/lib/types";
 import ProductCarousel from "./ProductCarousel";
 
-type ProductsProps = {
-  products: Product[];
-};
-
 async function getProducts(): Promise<Product[]> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
   const res = await fetch(`${baseUrl}/api/products/recent`, {
-    cache: "no-store",
     next: { revalidate: 1800 },
   });
   if (!res.ok) {
