@@ -8,7 +8,7 @@ const Header: React.FC = () => {
         <div className="flex-1">
           <Link
             href="/"
-            className="btn btn-ghost normal-case text-2xl font-bold"
+            className="normal-case text-2xl font-bold"
           >
             Blinkhive
           </Link>

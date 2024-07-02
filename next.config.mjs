@@ -6,6 +6,7 @@ const nextConfig = {
   images: {
     remotePatterns: [
       { hostname: "public-files.gumroad.com" },
+      { hostname: "i.ibb.co" },
       { hostname: "assets.gumroad.com" },
     ],
   },

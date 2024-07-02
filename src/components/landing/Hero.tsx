@@ -1,15 +1,81 @@
-import Link from 'next/link';
-import React from 'react';
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
 
 const Hero: React.FC = () => {
   return (
-    <div className="hero min-h-[calc(100vh-4.5rem)] bg-base-200">
-      <div className="hero-content text-center">
-        <div className="max-w-md">
-          <h1 className="text-5xl font-bold">Revolutionize Your Digital Product Sales</h1>
-          <p className="py-6">Blockchain-Powered Affiliate Marketing for the Digital Age</p>
-          <Link href="/dashboard" className="btn btn-primary mr-2">For Merchants</Link>
-          <Link href="/dashboard" className="btn btn-secondary mr-2">For Affiliates</Link>
+    <div className="hero min-h-[calc(100vh-4.5rem)]">
+      <div
+        className="angled-bg bg-base-200 w-full h-full absolute top-0"
+        style={{
+          zIndex: -1,
+          clipPath: "polygon(0 0, 100% 0, 100% 10%, 0 100%)",
+        }}
+      ></div>
+      <div className="flex container items-center justify-center gap-24 p-4 flex-col lg:flex-row flex-col lg:flex-row">
+        <div className="text-center w-full mt-10 lg:mt-0 lg:w-1/2 lg:text-left">
+          <h1 className="text-4xl font-bold">
+            Next Generation Affiliate Marketing Platform Powered by{" "}
+            <span className="solana-gradient">Solana</span>
+          </h1>
+          <p className="text-lg py-6">
+            Join our cutting-edge blockchain-powered affiliate network for free!
+            Gain access to our curated marketplace and start promoting hot
+            selling products and scale your earnings. Transparent transactions,
+            instant settlement.
+          </p>
+        </div>
+        <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-1/2 ">
+          <div className="card bg-base-100 border border-base-300 w-full sm:w-1/2 shrink-0 shadow-2xl">
+            <figure className="bg-base-200 py-6">
+              <Image
+                src="https://i.ibb.co/YBcyxCs/Digital-lifestyle-rafiki-1.png"
+                alt="Shoes"
+                width={300}
+                height={200}
+                className="rounded-y-xl object-cover h-64 w-full"
+              />
+            </figure>
+            <div className="card-body">
+              <h2 className="card-title">Affiliates</h2>
+              <p>
+                Affiliates choose us because of our high-converting affiliate
+                offers, transparent transactions, and instant settlement. Get
+                started for free!
+              </p>
+              <Link
+                href="/login"
+                className="mt-6 btn btn-primary text-base 2xl:text-lg"
+              >
+                Start earning as affiliate
+              </Link>
+            </div>
+          </div>
+          <div className="card bg-base-100 border border-base-300 w-full sm:w-1/2 shrink-0 shadow-2xl">
+            <figure className="bg-base-200 py-6">
+              <Image
+                src="https://i.ibb.co/RPd3Pjv/merchant.png"
+                alt="Shoes"
+                width={300}
+                height={200}
+                className="rounded-y-xl object-cover h-64 w-full"
+              />
+            </figure>
+            <div className="card-body">
+              <h2 className="card-title">Merchants</h2>
+              <p>
+                We offer affiliate management solutions for product owners,
+                businesses, and brands looking to expose their products to the
+                Web3 crowd.
+              </p>
+              <Link
+                href="/login"
+                className="mt-6 btn btn-accent text-base 2xl:text-lg"
+              >
+                Boost sales as merchant
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </div>

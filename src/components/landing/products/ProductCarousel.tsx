@@ -34,9 +34,9 @@ const ProductCarousel = ({ products: products }: { products: Product[] }) => {
       }}
     >
       {products.map((product) => (
-        <SwiperSlide key={product.id}>
-          <div className="card card-compact bg-base-300 shadow-2xl border border-base-100 hover:shadow-3xl transition-shadow duration-300">
-            <figure className="flex-shrink-0">
+        <SwiperSlide key={product.id} className="!h-auto">
+          <div className="card card-compact bg-base-300 shadow-2xl border border-base-100 hover:shadow-3xl transition-shadow duration-300 h-full">
+            <figure>
               <a href={product.gumroadUrl} target="_blank" className="w-full">
                 <Image
                   src={product.imageUrl}
@@ -47,7 +47,7 @@ const ProductCarousel = ({ products: products }: { products: Product[] }) => {
                 />
               </a>
             </figure>
-            <div className="card-body flex-grow flex flex-col">
+            <div className="card-body">
               <a
                 href={product.gumroadUrl}
                 target="_blank"
