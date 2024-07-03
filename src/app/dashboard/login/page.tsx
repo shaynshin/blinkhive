@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createMagic } from "@/lib/magic";
 
-export default function Login() {
+const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -26,7 +26,7 @@ export default function Login() {
       });
 
       if (res.ok) {
-        router.push("/dashboard");
+        router.push("/dashboard/merchant");
       } else {
         throw new Error("Login failed");
       }
@@ -37,15 +37,15 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-200">
-      <div className="card w-96 bg-base-100 shadow-xl">
+    <div className="absolute inset-0 flex items-center justify-center p-6">
+      <div className="card w-96 bg-base-200 shadow-xl">
         <div className="card-body">
-          <h2 className="card-title justify-center mb-4">Email OTP Access</h2>
+          <h2 className="card-title justify-center mb-4">Login or Register</h2>
           <form onSubmit={handleLogin}>
             <input type="hidden" name="remember" defaultValue="true" />
             <div>
               <label htmlFor="email-address" className="sr-only">
-                Email address
+                Email Address
               </label>
               <div className="form-control mb-4">
                 <input
@@ -71,7 +71,7 @@ export default function Login() {
                 {isLoading ? (
                   <div className="loading loading-spinner loading-md" />
                 ) : (
-                  "Get OTP"
+                  "Get OTP Access Code"
                 )}
               </button>
             </div>
@@ -80,4 +80,6 @@ export default function Login() {
       </div>
     </div>
   );
-}
+};
+
+export default Login;

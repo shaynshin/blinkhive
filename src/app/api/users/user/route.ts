@@ -22,12 +22,13 @@ export async function GET(req: Request) {
     }
 
     const { data, error } = await supabase
-      .from("wallet")
-      .select("user_email, public_key")
-      .eq("user_email", userEmail);
+      .from("users")
+      .select("email, name, public_key")
+      .eq("email", userEmail);
 
-    const wallets = (data || []).map((item) => ({
-      userEmail: item.user_email,
+    const users = (data || []).map((item) => ({
+      userEmail: item.email,
+      userName: item.name,
       publicKey: item.public_key,
     }));
 
@@ -35,11 +36,11 @@ export async function GET(req: Request) {
       throw new Error(error.message);
     }
 
-    return NextResponse.json({ wallet: wallets[0] });
+    return NextResponse.json({ user: users[0] });
   } catch (error) {
-    console.error("Error fetching user's wallet:", error);
+    console.error("Error fetching user:", error);
     return NextResponse.json(
-      { error: "Failed to fetch user's wallet" },
+      { error: "Failed to fetch user" },
       { status: 500 }
     );
   }

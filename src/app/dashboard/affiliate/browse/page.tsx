@@ -1,11 +1,10 @@
 "use client";
 
-import withAuth from "@/components/withAuth";
 import React, { useState, useEffect } from "react";
-import { createMagic } from "@/lib/magic";
 import Image from "next/image";
 import { Blink, EnhancedProduct, Product } from "@/lib/types";
-import Link from "next/link";
+import { useWallet } from "@jup-ag/wallet-adapter";
+import { getOrCreateAndSetStorageMessage } from "@/lib/walletAuth";
 
 const ProductBrowse = () => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
@@ -14,37 +13,51 @@ const ProductBrowse = () => {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const limit = 8; // 2x4 grid for large screens
-  const magic = createMagic();
+  const wallet = useWallet();
 
   const handleCreateBlink = async (
     productId: string,
     setIsButtonLoading: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
-    setIsButtonLoading(true);
-    try {
-      const didToken = await magic?.user.getIdToken();
-      const response = await fetch("/api/blinks", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${didToken}`,
-        },
-        body: JSON.stringify({ productId }),
-      });
+    const { verificationStr, signatureStr } =
+      await getOrCreateAndSetStorageMessage(wallet);
+    if (
+      wallet &&
+      wallet.connected &&
+      !wallet.disconnecting &&
+      wallet.publicKey &&
+      verificationStr &&
+      signatureStr
+    ) {
+      try {
+        setIsButtonLoading(true);
 
-      if (response.status !== 200) {
-        throw "failed to save";
+        const response = await fetch("/api/blinks", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Verification": verificationStr,
+            "X-Signature": signatureStr,
+            "X-Pubkey": wallet.publicKey.toBase58(),
+          },
+          body: JSON.stringify({ productId }),
+        });
+
+        if (response.status !== 200) {
+          throw "failed to save";
+        }
+
+        const { blink } = (await response.json()) as { blink: Blink };
+        if (blink) setBlinks((prevBlinks) => [...prevBlinks, blink]);
+      } catch (error) {
+        console.error("Error saving changes:", error);
+      } finally {
+        setIsButtonLoading(false);
       }
-
-      const { blink } = (await response.json()) as { blink: Blink };
-      if (blink) setBlinks((prevBlinks) => [...prevBlinks, blink]);
-    } catch (error) {
+    } else {
       alert(
-        'ERROR: Save your Solana wallet address under "Wallet Settings" before creating blinks!'
+        "ERROR: Please connect your wallet at the top right and sign the message!"
       );
-      console.error("Error saving changes:", error);
-    } finally {
-      setIsButtonLoading(false);
     }
   };
 
@@ -60,32 +73,42 @@ const ProductBrowse = () => {
   };
 
   const fetchUserBlinks = async () => {
-    try {
-      const didToken = await magic?.user.getIdToken();
-      const response = await fetch(`/api/blinks/user`, {
-        headers: {
-          Authorization: `Bearer ${didToken}`,
-        },
-      });
+    const { verificationStr, signatureStr } =
+      await getOrCreateAndSetStorageMessage(wallet);
+    if (
+      wallet &&
+      wallet.connected &&
+      !wallet.disconnecting &&
+      wallet.publicKey &&
+      verificationStr &&
+      signatureStr
+    ) {
+      try {
+        const response = await fetch(`/api/blinks/user`, {
+          headers: {
+            "Content-Type": "application/json",
+            "X-Verification": verificationStr,
+            "X-Signature": signatureStr,
+            "X-Pubkey": wallet.publicKey.toBase58(),
+          },
+        });
 
-      if (!response.ok) throw new Error("Failed to fetch products");
+        if (!response.ok) throw new Error("Failed to fetch products");
 
-      const { blinks } = (await response.json()) as { blinks: Blink[] };
-      if (blinks.length > 0) setBlinks(blinks);
-    } catch (error) {
-      console.error("Error fetching products:", error);
+        const { blinks } = (await response.json()) as { blinks: Blink[] };
+        if (blinks.length > 0) setBlinks(blinks);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    } else {
+      setBlinks([]);
     }
   };
 
   const fetchAllProducts = async () => {
     setIsLoading(true);
     try {
-      const didToken = await magic?.user.getIdToken();
-      const response = await fetch(`/api/products`, {
-        headers: {
-          Authorization: `Bearer ${didToken}`,
-        },
-      });
+      const response = await fetch(`/api/products`);
 
       if (!response.ok) throw new Error("Failed to fetch products");
 
@@ -105,6 +128,10 @@ const ProductBrowse = () => {
   }, [allProducts, blinks]);
 
   useEffect(() => {
+    fetchUserBlinks();
+  }, [wallet]);
+
+  useEffect(() => {
     fetchAllProducts();
     fetchUserBlinks();
   }, []);
@@ -122,7 +149,7 @@ const ProductBrowse = () => {
   };
 
   return (
-    <div className="p-6 relative min-h-full">
+    <div className="relative min-h-full">
       <h1 className="text-2xl font-bold mb-6">Browse Products</h1>
       {isLoading ? (
         <div className="absolute inset-0 flex items-center justify-center">

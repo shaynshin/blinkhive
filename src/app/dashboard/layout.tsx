@@ -1,11 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import DashboardWrapper from "@/components/DashboardWrapper";
-import withAuth from "@/components/withAuth";
+import { UnifiedWalletButton, useWallet } from "@jup-ag/wallet-adapter";
 import { logout } from "@/lib/auth";
+import { getOrCreateAndSetStorageMessage } from "@/lib/walletAuth";
+import WalletWrapper from "@/components/WalletWrapper";
+import { createMagic } from "@/lib/magic";
+import { Magic } from "magic-sdk";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
@@ -14,32 +17,53 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   );
   const router = useRouter();
 
+  const wallet = useWallet();
+
   const navItems = {
     merchant: [
-      { name: "Dashboard", path: "/dashboard" },
-      { name: "Manage Products", path: "/dashboard/products" },
-      { name: "Merchant Analytics", path: "/dashboard/analytics/merchant" },
+      { name: "Dashboard", path: "/dashboard/merchant" },
+      { name: "Manage Products", path: "/dashboard/merchant/products" },
+      { name: "Analytics", path: "/dashboard/merchant/analytics" },
+      { name: "Account Settings", path: "/dashboard/merchant/settings" },
     ],
     affiliate: [
-      { name: "Dashboard", path: "/dashboard" },
-      { name: "Browse Products", path: "/dashboard/browse" },
-      { name: "Manage Blinks", path: "/dashboard/blinks" },
-      { name: "Wallet Settings", path: "/dashboard/settings" },
-      { name: "Analytics", path: "/dashboard/analytics/affiliate" },
+      { name: "Dashboard", path: "/dashboard/affiliate" },
+      { name: "Browse Products", path: "/dashboard/affiliate/browse" },
+      { name: "Manage Blinks", path: "/dashboard/affiliate/blinks" },
+      { name: "Analytics", path: "/dashboard/affiliate/analytics" },
     ],
   };
 
+  useEffect(() => {
+    if (navItems.affiliate.some((item) => pathname.startsWith(item.path))) {
+      setActiveRole("affiliate");
+    } else {
+      setActiveRole("merchant");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (
+      wallet &&
+      wallet.connected &&
+      !wallet.disconnecting &&
+      wallet.publicKey
+    ) {
+      getOrCreateAndSetStorageMessage(wallet);
+    }
+  }, [wallet]);
+
   const handleLogout = () => {
     logout();
-    router.push("/login");
+    router.push("/dashboard/login");
   };
 
   return (
     <div className="drawer lg:drawer-open">
       <input id="dashboard-drawer" type="checkbox" className="drawer-toggle" />
-      <div className="drawer-content flex flex-col">
+      <div className="drawer-content flex flex-col min-h-screen">
         {/* Top Navigation Bar */}
-        <div className="w-full navbar bg-base-300">
+        <div className="w-full navbar bg-base-300 flex justify-between">
           <div className="flex-none lg:hidden">
             <label
               htmlFor="dashboard-drawer"
@@ -60,59 +84,54 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
               </svg>
             </label>
           </div>
-          <div className="flex-1 px-2 mx-2 text-2xl font-medium">Blinkhive</div>
-          <div className="flex-none">
-            <ul className="menu menu-horizontal px-1">
+          <div className="flex-1 px-2 mx-2 text-2xl font-medium max-sm:hidden">
+            Blinkhive
+          </div>
+          <div className="flex-none text-sm">
+            <ul className="flex gap-4 px-1 items-center">
               <li>
-                <button
-                  onClick={() => setActiveRole("merchant")}
-                  className={activeRole === "merchant" ? "active" : ""}
-                >
-                  Merchant
-                </button>
-              </li>
-              <li>
-                <button
+                <Link
+                  href="/dashboard/affiliate"
                   onClick={() => setActiveRole("affiliate")}
-                  className={activeRole === "affiliate" ? "active" : ""}
+                  className={
+                    activeRole === "affiliate"
+                      ? "text-accent font-medium py-3"
+                      : "py-3 hover:text-accent"
+                  }
                 >
                   Affiliate
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={handleLogout}>Logout</button>
+                <Link
+                  href="/dashboard/merchant"
+                  onClick={() => setActiveRole("merchant")}
+                  className={
+                    activeRole === "merchant"
+                      ? "text-accent font-medium py-3"
+                      : "py-3 hover:text-accent"
+                  }
+                >
+                  Merchant
+                </Link>
+              </li>
+              <li>
+                {activeRole === "affiliate" ? (
+                  <UnifiedWalletButton
+                    buttonClassName="btn"
+                    currentUserClassName="btn"
+                  />
+                ) : (
+                  <button onClick={handleLogout} className="btn">
+                    Logout
+                  </button>
+                )}
               </li>
             </ul>
           </div>
         </div>
         {/* Page Content */}
-        <main className="flex-grow p-6">
-          {/* <div className="toast toast-top toast-end">
-            <div role="alert" className="alert shadow-lg">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                className="stroke-info h-6 w-6 shrink-0"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                ></path>
-              </svg>
-              <div>
-                <h3 className="font-bold">New message!</h3>
-                <div className="text-xs">You have 1 unread message</div>
-              </div>
-              <button className="btn btn-sm">See</button>
-            </div>
-          </div> */}
-          <DashboardWrapper activeRole={activeRole}>
-            {children}
-          </DashboardWrapper>
-        </main>
+        <main className="flex-grow p-6 relative">{children}</main>
       </div>
       <div className="drawer-side">
         <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
@@ -133,4 +152,4 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default withAuth(DashboardLayout);
+export default WalletWrapper(DashboardLayout);

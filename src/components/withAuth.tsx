@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { createMagic } from "@/lib/magic";
 
 const LoadingAnimation = () => (
-  <div className="flex flex-col items-center justify-center h-screen bg-base-200">
+  <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
     <span className="loading loading-bars loading-lg text-info"></span>
-    <p className="mt-4 text-lg text-base-content">
+    <p className="mt-4 text-lg text-base-content text-center">
       Just a second, we are getting the page ready for you!
     </p>
   </div>
@@ -26,13 +26,13 @@ const withAuth = <P extends object>(
         try {
           const isLoggedIn = await magic!.user.isLoggedIn();
           if (!isLoggedIn) {
-            router.push("/login");
+            router.push("/dashboard/login");
           } else {
             setIsLoading(false);
           }
         } catch (error) {
           console.error("Error checking authentication:", error);
-          router.push("/login");
+          router.push("/dashboard/login");
         }
       };
 

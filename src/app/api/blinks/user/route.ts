@@ -1,30 +1,26 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { Magic } from "@magic-sdk/admin";
-
-const magic = new Magic(process.env.MAGIC_SECRET_KEY);
+import { verifyWalletSignature } from "@/lib/walletAuth";
 
 export async function GET(req: Request) {
   try {
-    const didToken = req.headers.get("Authorization")?.slice(7);
-    if (!didToken) {
+    const verificationStr = req.headers.get("x-verification");
+    const signatureStr = req.headers.get("x-signature");
+    const pubkey = req.headers.get("x-pubkey");
+
+    if (
+      !verificationStr ||
+      !signatureStr ||
+      !pubkey ||
+      !verifyWalletSignature(verificationStr, signatureStr, pubkey)
+    ) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const metadata = await magic.users.getMetadataByToken(didToken);
-    const userEmail = metadata.email;
-
-    if (!userEmail) {
-      return NextResponse.json(
-        { error: "User email not found" },
-        { status: 400 }
-      );
     }
 
     const { data, error } = await supabase
       .from("blinks")
       .select("id, products (*)")
-      .eq("user_email", userEmail);
+      .eq("user_pub_key", pubkey);
 
     const blinks = (data || []).map((item: any) => ({
       id: item.id,

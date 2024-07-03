@@ -16,10 +16,14 @@ export async function POST(req: Request) {
     const userEmail = metadata.email;
 
     if (!userEmail) {
-      throw new Error("Email not available");
+      throw new Error("Invalid email");
     }
 
-    const { publicKey } = await req.json();
+    const { publicKey, userName } = await req.json();
+
+    if (!userName) {
+      throw new Error("Invalid username");
+    }
 
     // checck if valid pubkey
     try {
@@ -30,33 +34,35 @@ export async function POST(req: Request) {
 
     // Insert the product into the database
     const { data, error } = await supabase
-      .from("wallet")
+      .from("users")
       .upsert(
         {
-          user_email: userEmail,
+          email: userEmail,
+          name: userName,
           public_key: publicKey,
         },
         {
-          onConflict: "user_email",
+          onConflict: "email",
         }
       )
       .select();
 
     if (error || !data) throw error;
 
-    const wallet = data[0];
+    const user = data[0];
 
     return NextResponse.json({
       success: true,
-      wallet: {
-        userEmail: wallet.user_email,
-        publicKey: wallet.public_key,
+      user: {
+        userEmail: user.email,
+        userName: user.name,
+        publicKey: user.public_key,
       },
     });
   } catch (error) {
-    console.error("Error saving wallet:", error);
+    console.error("Error saving user:", error);
     return NextResponse.json(
-      { error: "Failed to save wallet" },
+      { error: "Failed to save user" },
       { status: 500 }
     );
   }

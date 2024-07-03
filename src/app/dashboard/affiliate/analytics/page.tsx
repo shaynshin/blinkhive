@@ -1,13 +1,13 @@
-import React from 'react';
+import React from "react";
 
 const AffiliateAnalytics = () => {
   return (
-    <div className="p-6">
+    <div>
       <h1 className="text-2xl font-bold mb-6">Affiliate Analytics</h1>
       <div className="mockup-browser border-base-300 border flex flex-col">
         <div className="mockup-browser-toolbar">
           <div className="input border-base-300 border">
-            dashboard/analytics/affiliate
+            dashboard/affiliate/analytics
           </div>
         </div>
 

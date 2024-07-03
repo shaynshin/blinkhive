@@ -1,21 +1,20 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { Magic } from "@magic-sdk/admin";
-
-const magic = new Magic(process.env.MAGIC_SECRET_KEY);
+import { verifyWalletSignature } from "@/lib/walletAuth";
 
 export async function POST(req: Request) {
   try {
-    const didToken = req.headers.get("Authorization")?.slice(7);
-    if (!didToken) {
+    const verificationStr = req.headers.get("x-verification");
+    const signatureStr = req.headers.get("x-signature");
+    const pubkey = req.headers.get("x-pubkey");
+
+    if (
+      !verificationStr ||
+      !signatureStr ||
+      !pubkey ||
+      !verifyWalletSignature(verificationStr, signatureStr, pubkey)
+    ) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const metadata = await magic.users.getMetadataByToken(didToken!);
-    const userEmail = metadata.email;
-
-    if (!userEmail) {
-      throw new Error("Email not available");
     }
 
     const { productId } = await req.json();
@@ -25,7 +24,7 @@ export async function POST(req: Request) {
       .from("blinks")
       .insert({
         product_id: productId,
-        user_email: userEmail,
+        user_pub_key: pubkey,
       })
       .select();
 

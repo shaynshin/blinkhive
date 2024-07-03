@@ -33,7 +33,7 @@ const Header: React.FC = () => {
           </ul>
         </div>
         <div className="flex-none">
-          <Link href="/login" className="btn btn-primary">
+          <Link href="/dashboard/affiliate/browse" className="btn btn-primary">
             Get Started
           </Link>
         </div>

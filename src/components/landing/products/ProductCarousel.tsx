@@ -73,7 +73,10 @@ const ProductCarousel = ({ products: products }: { products: Product[] }) => {
                 </div>
               </div>
               <div className="card-actions justify-start mt-4">
-                <Link href="/login" className="btn btn-primary btn-sm">
+                <Link
+                  href="/dashboard/affiliate/browse"
+                  className="btn btn-primary btn-sm"
+                >
                   Create affiliate Blink
                   <svg
                     className="h-4 w-4"

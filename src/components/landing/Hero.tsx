@@ -47,7 +47,7 @@ const Hero: React.FC = () => {
                 started for free!
               </p>
               <Link
-                href="/login"
+                href="/dashboard/affiliate/browse"
                 className="mt-6 btn btn-primary text-base 2xl:text-lg"
               >
                 Start earning as affiliate
@@ -72,7 +72,7 @@ const Hero: React.FC = () => {
                 Web3 crowd.
               </p>
               <Link
-                href="/login"
+                href="/dashboard/merchant"
                 className="mt-6 btn btn-accent text-base 2xl:text-lg"
               >
                 Boost sales as merchant

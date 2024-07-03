@@ -77,6 +77,9 @@ export async function GET(
           },
         ],
       },
+      error: {
+        message: "Please provide valid email",
+      },
     };
 
     return NextResponse.json(response, { headers: ACTIONS_CORS_HEADERS });
@@ -124,7 +127,17 @@ export async function POST(
 
     const { data: blink, error: fetchError } = await supabase
       .from("blinks")
-      .select("id, wallet (public_key), products (price, commission)")
+      .select(
+        `id, 
+        user_pub_key, 
+        products (
+          price, 
+          commission, 
+          users (
+            public_key
+          )
+        )`
+      )
       .eq("id", params.blinkId)
       .single();
 
@@ -134,15 +147,13 @@ export async function POST(
 
     const product = blink.products as any;
 
-    const wallet = blink.wallet as any;
-
     const reqBody: ActionPostRequest = await req.json();
 
     // transfer to merchant
     const transaction = await prepareTransaction(
       new PublicKey(reqBody.account), // buyer
-      adminPubKey, // merchant
-      new PublicKey(wallet.public_key), // affiliate
+      new PublicKey(product.users.public_key), // merchant
+      new PublicKey(blink.user_pub_key), // affiliate
       adminPubKey, // admin
       product.price,
       product.commission,
