@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const Benefits: React.FC = () => {
@@ -46,9 +47,7 @@ const Benefits: React.FC = () => {
                 <ul className="space-y-2">
                   {benefit.items.map((item, itemIndex) => (
                     <li key={itemIndex} className="flex items-center">
-                      <span
-                        className={`text-2xl mr-4 p-2 rounded-full`}
-                      >
+                      <span className={`text-2xl mr-4 p-2 rounded-full`}>
                         {item.icon}
                       </span>
                       <span className="text-lg">{item.text}</span>
@@ -61,7 +60,9 @@ const Benefits: React.FC = () => {
         </div>
       </div>
       <div className="mt-16 text-center">
-        <button className="btn btn-primary btn-base btn-lg">Get Started Now</button>
+        <Link href="/login" className="btn btn-primary btn-base btn-lg">
+          Get Started Now
+        </Link>
       </div>
     </section>
   );

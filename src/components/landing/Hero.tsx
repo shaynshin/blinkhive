@@ -33,9 +33,9 @@ const Hero: React.FC = () => {
             <figure className="bg-base-200 py-6">
               <Image
                 src="https://i.ibb.co/YBcyxCs/Digital-lifestyle-rafiki-1.png"
-                alt="Shoes"
-                width={300}
-                height={200}
+                alt="Affiliate"
+                width={640}
+                height={640}
                 className="rounded-y-xl object-cover h-64 w-full"
               />
             </figure>
@@ -58,9 +58,9 @@ const Hero: React.FC = () => {
             <figure className="bg-base-200 py-6">
               <Image
                 src="https://i.ibb.co/RPd3Pjv/merchant.png"
-                alt="Shoes"
-                width={300}
-                height={200}
+                alt="Merchant"
+                width={640}
+                height={640}
                 className="rounded-y-xl object-cover h-64 w-full"
               />
             </figure>

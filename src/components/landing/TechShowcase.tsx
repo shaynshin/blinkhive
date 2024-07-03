@@ -29,7 +29,7 @@ const TechShowcase: React.FC = () => {
             </p>
           </div>
           <div className="bg-base-200 rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <h3 className="text-2xl font-semibold mb-4 text-primary">
+            <h3 className="text-2xl font-semibold mb-4 text-secondary">
               Powered by <span className="solana-gradient">Solana</span>
             </h3>
             <p className="text-base-content text-opacity-80">
