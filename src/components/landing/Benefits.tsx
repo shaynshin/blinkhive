@@ -37,7 +37,7 @@ const Benefits: React.FC = () => {
             <div
               key={index}
               className={`card bg-base-100 shadow-xl border-t-4 ${
-                "border-" + benefit.color
+                index === 0 ? "border-primary" : "border-secondary"
               } hover:shadow-2xl transition-shadow duration-300`}
             >
               <div className="card-body">

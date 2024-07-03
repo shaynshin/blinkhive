@@ -25,7 +25,7 @@ const TechShowcase: React.FC = () => {
             <p className="text-base-content text-opacity-80">
               Blinks (Blockchain Links) unfurl into full experiences, allowing
               users to purchase any products with crypto, without leaving the
-              application they are own.
+              application they are on.
             </p>
           </div>
           <div className="bg-base-200 rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
