@@ -14,15 +14,18 @@ const Hero: React.FC = () => {
       ></div>
       <div className="flex container items-center justify-center gap-24 p-4 flex-col lg:flex-row flex-col lg:flex-row">
         <div className="text-center w-full mt-10 lg:mt-0 lg:w-1/2 lg:text-left">
+          <h4 className="text-xl font-medium text-primary py-2 px-12 sm:px-0">
+            Transparent transactions. Instant payouts.
+          </h4>
           <h1 className="text-4xl font-bold">
             Next Generation Affiliate Marketing Platform Powered by{" "}
             <span className="solana-gradient">Solana</span>
           </h1>
           <p className="text-lg py-6">
-            Join our cutting-edge blockchain-powered affiliate network for free!
-            Gain access to our curated marketplace and start promoting hot
-            selling products and scale your earnings. Transparent transactions,
-            instant settlement.
+            Join our cutting-edge blockchain-powered affiliate network{" "}
+            <span className="font-bold">for free</span>. Gain access to our
+            curated marketplace and start promoting hot selling products and{" "}
+            <span className="font-bold">scale your earnings</span>.
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-1/2 ">
