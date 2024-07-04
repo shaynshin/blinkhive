@@ -7,8 +7,6 @@ import { UnifiedWalletButton, useWallet } from "@jup-ag/wallet-adapter";
 import { logout } from "@/lib/auth";
 import { getOrCreateAndSetStorageMessage } from "@/lib/walletAuth";
 import WalletWrapper from "@/components/WalletWrapper";
-import { createMagic } from "@/lib/magic";
-import { Magic } from "magic-sdk";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const [activeRole, setActiveRole] = useState<"merchant" | "affiliate">(
@@ -43,10 +41,25 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     ],
   };
 
+  const hiddenNavitems = {
+    merchant: [
+      ...navItems.merchant,
+      { name: "Dashboard", path: "/dashboard/login" },
+    ],
+    affiliate: [
+      ...navItems.affiliate,
+      { name: "Dashboard", path: "/dashboard/connect" },
+    ],
+  };
+
   useEffect(() => {
-    if (navItems.affiliate.some((item) => pathname.startsWith(item.path))) {
+    if (
+      hiddenNavitems.affiliate.some((item) => pathname.startsWith(item.path))
+    ) {
       setActiveRole("affiliate");
-    } else {
+    } else if (
+      hiddenNavitems.merchant.some((item) => pathname.startsWith(item.path))
+    ) {
       setActiveRole("merchant");
     }
   }, []);
@@ -127,8 +140,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
               <li>
                 {activeRole === "affiliate" ? (
                   <UnifiedWalletButton
-                    buttonClassName="btn"
-                    currentUserClassName="btn"
+                    buttonClassName="btn btn-primary"
+                    currentUserClassName="btn btn-primary"
                   />
                 ) : (
                   <button onClick={handleLogout} className="btn">

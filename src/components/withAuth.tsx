@@ -21,10 +21,17 @@ const withAuth = <P extends object>(
       const magic = createMagic();
       const checkAuth = async () => {
         try {
-          const isLoggedIn = await magic!.user.isLoggedIn();
-          if (!isLoggedIn) {
+          const didToken = await magic?.user.getIdToken();
+          if (!didToken) {
             router.push("/dashboard/login");
           } else {
+            const response = await fetch("/api/whitelist/merchant", {
+              headers: {
+                Authorization: `Bearer ${didToken}`,
+              },
+            });
+
+            if (!response.ok) router.push("/dashboard/waitlist");
             setIsLoading(false);
           }
         } catch (error) {

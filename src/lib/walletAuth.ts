@@ -7,15 +7,9 @@ import { PublicKey } from "@solana/web3.js";
 export const getOrCreateAndSetStorageMessage = async (
   wallet: WalletContextState
 ) => {
-  let verificationStr = localStorage.getItem("blinkhive_verification_string");
-  let signatureStr = localStorage.getItem("blinkhive_signature_string");
+  let { verificationStr, signatureStr } = getAndValidateStorageMessage(wallet);
 
-  if (
-    wallet.signMessage &&
-    (!verificationStr ||
-      !signatureStr ||
-      (verificationStr && !isVertificationStrValid(verificationStr, wallet)))
-  ) {
+  if (wallet.signMessage && (!verificationStr || !signatureStr)) {
     const randomString = crypto.randomBytes(16).toString("hex");
     const verificationObj = {
       pubkey: wallet.publicKey?.toBase58(),
@@ -32,6 +26,22 @@ export const getOrCreateAndSetStorageMessage = async (
   }
 
   return { verificationStr, signatureStr };
+};
+
+export const getAndValidateStorageMessage = (wallet: WalletContextState) => {
+  let verificationStr = localStorage.getItem("blinkhive_verification_string");
+  let signatureStr = localStorage.getItem("blinkhive_signature_string");
+
+  if (
+    wallet.signMessage &&
+    (!verificationStr ||
+      !signatureStr ||
+      (verificationStr && !isVertificationStrValid(verificationStr, wallet)))
+  ) {
+    return { verificationStr: null, signatureStr: null };
+  } else {
+    return { verificationStr, signatureStr };
+  }
 };
 
 export const isVertificationStrValid = (
