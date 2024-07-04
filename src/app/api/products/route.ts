@@ -20,6 +20,21 @@ export async function POST(req: Request) {
       throw new Error("Email not available");
     }
 
+    // Check if the user is whitelisted as an merchant
+    const { data: whitelistData, error: whitelistError } = await supabase
+      .from("whitelist")
+      .select("*")
+      .eq("user_email", userEmail)
+      .eq("user_role", "merchant")
+      .single();
+
+    if (whitelistError || !whitelistData) {
+      return NextResponse.json(
+        { error: "User not whitelisted as merchant" },
+        { status: 403 }
+      );
+    }
+
     // First, check product eligibility
     const eligibilityUrl = `https://app.gumroad.com/global_affiliates/product_eligibility/${encodeURIComponent(
       url
@@ -127,7 +142,7 @@ export async function GET(req: Request) {
       .from("products")
       .select(
         "id, name, price, rating, seller, image_url, gumroad_url, commission"
-      )
+      );
 
     if (error) {
       throw new Error(error.message);

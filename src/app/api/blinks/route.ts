@@ -19,6 +19,21 @@ export async function POST(req: Request) {
 
     const { productId } = await req.json();
 
+    // Check if the user is whitelisted as an affiliate
+    const { data: whitelistData, error: whitelistError } = await supabase
+      .from("whitelist")
+      .select("*")
+      .eq("user_pub_key", pubkey)
+      .eq("user_role", "affiliate")
+      .single();
+
+    if (whitelistError || !whitelistData) {
+      return NextResponse.json(
+        { error: "User not whitelisted as affiliate" },
+        { status: 403 }
+      );
+    }
+
     // Insert the blink into the database
     const { data, error } = await supabase
       .from("blinks")
