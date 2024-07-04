@@ -4,7 +4,7 @@ import React from "react";
 
 const Hero: React.FC = () => {
   return (
-    <div className="hero min-h-[calc(100vh-4.5rem)]">
+    <div className="hero min-h-[calc(100vh-5rem)]">
       <div
         className="angled-bg bg-base-200 w-full h-full absolute top-0"
         style={{
