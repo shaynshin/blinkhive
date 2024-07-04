@@ -236,7 +236,7 @@ const ProductManagement = () => {
       </div>
       {isFetchLoading ? (
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="loading loading-dots loading-lg"></span>
+          <span className="loading loading-bars loading-lg text-info"></span>
         </div>
       ) : (
         <>

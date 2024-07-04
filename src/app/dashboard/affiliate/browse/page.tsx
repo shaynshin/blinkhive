@@ -153,7 +153,7 @@ const ProductBrowse = () => {
       <h1 className="text-2xl font-bold mb-6">Browse Products</h1>
       {isLoading ? (
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="loading loading-dots loading-lg"></span>
+          <span className="loading loading-bars loading-lg text-info"></span>
         </div>
       ) : (
         <>

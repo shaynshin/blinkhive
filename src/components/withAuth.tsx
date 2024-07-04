@@ -6,10 +6,7 @@ import { createMagic } from "@/lib/magic";
 
 const LoadingAnimation = () => (
   <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
-    <span className="loading loading-bars loading-lg text-info"></span>
-    <p className="mt-4 text-lg text-base-content text-center">
-      Just a second, we are getting the page ready for you!
-    </p>
+    <span className="loading loading-bars loading-lg text-info" />
   </div>
 );
 
