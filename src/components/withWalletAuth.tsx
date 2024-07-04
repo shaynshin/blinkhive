@@ -43,7 +43,7 @@ const withWalletAuth = <P extends object>(
           });
 
           if (!response.ok) router.push("/dashboard/waitlist");
-          router.push("/dashboard/affiliate");
+          else router.push("/dashboard/affiliate");
 
           setIsLoading(false);
         } catch (error) {
