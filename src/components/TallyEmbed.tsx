@@ -16,7 +16,7 @@ export default function TallyEmbed() {
 
   return (
     <iframe
-      data-tally-src="https://tally.so/embed/m6xjyO?hideTitle=1&dynamicHeight=1"
+      data-tally-src="https://tally.so/embed/m6xjyO?dynamicHeight=1"
       width="100%"
       height="577"
       style={{ border: "none", margin: 0 }}
