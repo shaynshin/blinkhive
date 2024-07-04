@@ -11,13 +11,22 @@ import { createMagic } from "@/lib/magic";
 import { Magic } from "magic-sdk";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
-  const pathname = usePathname();
   const [activeRole, setActiveRole] = useState<"merchant" | "affiliate">(
     "affiliate"
   );
-  const router = useRouter();
 
+  const pathname = usePathname();
+  const router = useRouter();
   const wallet = useWallet();
+
+  const closeDrawer = () => {
+    const drawer = document.getElementById(
+      "dashboard-drawer"
+    ) as HTMLInputElement | null;
+    if (drawer && drawer.type === "checkbox") {
+      drawer.checked = false;
+    }
+  };
 
   const navItems = {
     merchant: [
@@ -141,6 +150,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
               <Link
                 href={item.path}
                 className={pathname === item.path ? "active" : ""}
+                onClick={closeDrawer}
               >
                 {item.name}
               </Link>
