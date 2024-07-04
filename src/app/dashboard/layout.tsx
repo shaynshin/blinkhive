@@ -65,14 +65,22 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    if (
-      wallet &&
-      wallet.connected &&
-      !wallet.disconnecting &&
-      wallet.publicKey
-    ) {
-      getOrCreateAndSetStorageMessage(wallet);
-    }
+    const getMessage = async () => {
+      if (
+        wallet &&
+        wallet.connected &&
+        !wallet.disconnecting &&
+        wallet.publicKey
+      ) {
+        try {
+          await getOrCreateAndSetStorageMessage(wallet);
+          router.push("/dashboard/affiliate");
+        } catch (error) {
+          console.error("failed to sign message");
+        }
+      }
+    };
+    getMessage();
   }, [wallet]);
 
   const handleLogout = () => {

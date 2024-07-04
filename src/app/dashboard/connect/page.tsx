@@ -11,6 +11,7 @@ const Login: React.FC = () => {
   const wallet = useWallet();
 
   useEffect(() => {
+    setIsLoading(true);
     const checkAuth = async () => {
       try {
         if (!wallet || !wallet.publicKey) {
@@ -35,10 +36,10 @@ const Login: React.FC = () => {
 
         if (!response.ok) router.push("/dashboard/waitlist");
         else router.push("/dashboard/affiliate");
-
-        setIsLoading(false);
       } catch (error) {
         console.error("Error checking authentication:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -54,7 +55,7 @@ const Login: React.FC = () => {
           </h2>
           <div className="form-control">
             {isLoading ? (
-              <div className="loading loading-spinner loading-md" />
+              <div className="mx-auto loading loading-spinner loading-md" />
             ) : (
               <UnifiedWalletButton
                 buttonClassName="btn btn-primary"
