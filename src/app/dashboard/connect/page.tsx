@@ -12,7 +12,7 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    const checkAuth = async () => {
+    const checkVerified = async () => {
       try {
         if (!wallet || !wallet.publicKey) {
           return;
@@ -25,17 +25,7 @@ const Login: React.FC = () => {
           throw Error("No stored verifications");
         }
 
-        const response = await fetch("/api/whitelist/affiliate", {
-          headers: {
-            "Content-Type": "application/json",
-            "X-Verification": verificationStr,
-            "X-Signature": signatureStr,
-            "X-Pubkey": wallet.publicKey.toBase58(),
-          },
-        });
-
-        if (!response.ok) router.push("/dashboard/waitlist");
-        else router.push("/dashboard/affiliate");
+        router.push("/dashboard/affiliate");
       } catch (error) {
         console.error("Error checking authentication:", error);
       } finally {
@@ -43,7 +33,7 @@ const Login: React.FC = () => {
       }
     };
 
-    checkAuth();
+    checkVerified();
   }, [wallet]);
 
   return (

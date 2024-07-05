@@ -20,7 +20,7 @@ const withWalletAuth = <P extends object>(
     const wallet = useWallet();
 
     useEffect(() => {
-      const checkAuth = async () => {
+      const checkVerifiedAndWhitelist = async () => {
         try {
           if (!wallet || !wallet.publicKey) {
             throw Error("Wallet not available");
@@ -42,17 +42,16 @@ const withWalletAuth = <P extends object>(
             },
           });
 
-          if (!response.ok) router.push("/dashboard/waitlist");
-          else router.push("/dashboard/affiliate");
-
-          setIsLoading(false);
+          if (!response.ok) router.push("/dashboard/waitlist?role=affiliate");
         } catch (error) {
           console.error("Error checking authentication:", error);
           router.push("/dashboard/connect");
+        } finally {
+          setIsLoading(false);
         }
       };
 
-      checkAuth();
+      checkVerifiedAndWhitelist();
     }, [wallet]);
 
     if (isLoading) {

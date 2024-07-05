@@ -1,5 +1,5 @@
 import TallyEmbed from "@/components/TallyEmbed";
 
-export default function DashboardWaitlistPage() {
+export default function WaitlistPage() {
   return <TallyEmbed />;
 }
