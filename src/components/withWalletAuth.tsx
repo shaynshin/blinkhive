@@ -42,7 +42,10 @@ const withWalletAuth = <P extends object>(
             },
           });
 
-          if (!response.ok) router.push("/dashboard/waitlist?role=affiliate");
+          if (!response.ok)
+            router.push(
+              `/dashboard/waitlist?role=affiliate&wallet=${wallet.publicKey.toBase58()}`
+            );
         } catch (error) {
           console.error("Error checking authentication:", error);
           router.push("/dashboard/connect");

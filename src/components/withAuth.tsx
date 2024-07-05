@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createMagic } from "@/lib/magic";
+import { useLoggedInStore } from "@/stores/loggedInStore";
 
 const LoadingAnimation = () => (
   <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
@@ -16,22 +17,31 @@ const withAuth = <P extends object>(
   const AuthComponent = (props: any) => {
     const [isLoading, setIsLoading] = useState(true);
     const router = useRouter();
+    const setLoggedIn = useLoggedInStore((state) => state.setLoggedIn);
 
     useEffect(() => {
       const magic = createMagic();
       const checkAuth = async () => {
         try {
-          const didToken = await magic?.user.getIdToken();
-          if (!didToken) {
+          const [didToken, userMetadata] = await Promise.all([
+            await magic?.user.getIdToken(),
+            await magic?.user.getMetadata(),
+          ]);
+
+          if (!didToken || !userMetadata) {
             router.push("/dashboard/login");
           } else {
+            setLoggedIn(true);
             const response = await fetch("/api/whitelist/merchant", {
               headers: {
                 Authorization: `Bearer ${didToken}`,
               },
             });
 
-            if (!response.ok) router.push("/dashboard/waitlist?role=merchant");
+            if (!response.ok)
+              router.push(
+                `/dashboard/waitlist?role=merchant&email=${userMetadata?.email}`
+              );
             setIsLoading(false);
           }
         } catch (error) {
