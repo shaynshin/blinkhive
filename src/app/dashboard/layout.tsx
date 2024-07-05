@@ -7,11 +7,14 @@ import { UnifiedWalletButton, useWallet } from "@jup-ag/wallet-adapter";
 import { logout } from "@/lib/auth";
 import { getOrCreateAndSetStorageMessage } from "@/lib/walletAuth";
 import WalletWrapper from "@/components/WalletWrapper";
+import { useLoggedInStore } from "@/stores/loggedInStore";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const [activeRole, setActiveRole] = useState<"merchant" | "affiliate">(
     "affiliate"
   );
+  const loggedIn = useLoggedInStore((state) => state.loggedIn);
+  const setLoggedIn = useLoggedInStore((state) => state.setLoggedIn);
 
   const pathname = usePathname();
   const router = useRouter();
@@ -84,6 +87,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   }, [wallet]);
 
   const handleLogout = () => {
+    console.log("ABC")
+    setLoggedIn(false);
     logout();
     router.push("/dashboard/login");
   };
@@ -148,13 +153,17 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
               <li>
                 {activeRole === "affiliate" ? (
                   <UnifiedWalletButton
-                    buttonClassName="btn btn-primary"
-                    currentUserClassName="btn btn-primary"
+                    buttonClassName="btn btn-primary !text-sm"
+                    currentUserClassName="btn btn-primary !text-sm"
                   />
-                ) : (
-                  <button onClick={handleLogout} className="btn">
+                ) : loggedIn ? (
+                  <button onClick={handleLogout} className="btn btn-primary">
                     Logout
                   </button>
+                ) : (
+                  <Link href="/dashboard/login" className="btn btn-primary">
+                    Login
+                  </Link>
                 )}
               </li>
             </ul>
