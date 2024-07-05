@@ -55,7 +55,7 @@ const withWalletAuth = <P extends object>(
       };
 
       checkVerifiedAndWhitelist();
-    }, [wallet]);
+    }, [wallet.publicKey]);
 
     if (isLoading) {
       return <LoadingAnimation />;

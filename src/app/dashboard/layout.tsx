@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { UnifiedWalletButton, useWallet } from "@jup-ag/wallet-adapter";
@@ -77,7 +77,6 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       ) {
         try {
           await getOrCreateAndSetStorageMessage(wallet);
-          router.push("/dashboard/affiliate");
         } catch (error) {
           console.error("failed to sign message");
         }
@@ -87,7 +86,6 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   }, [wallet]);
 
   const handleLogout = () => {
-    console.log("ABC");
     setLoggedIn(false);
     logout();
     router.push("/dashboard/login");
