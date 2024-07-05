@@ -7,7 +7,7 @@ const CTA: React.FC = () => {
       <div className="container mx-auto px-4 text-center">
         <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
         <p className="mb-8">Join our platform today and revolutionize your digital product sales!</p>
-        <Link href="/dashboard/affiliate/browse" className="btn btn-secondary btn-lg">Get Started Now</Link>
+        <Link href="/dashboard/affiliate/browse" className="btn btn-accent btn-lg">Get Started Now</Link>
       </div>
     </section>
   );

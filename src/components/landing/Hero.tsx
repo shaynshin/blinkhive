@@ -14,7 +14,7 @@ const Hero: React.FC = () => {
       ></div>
       <div className="flex container items-center justify-center gap-24 p-4 flex-col lg:flex-row flex-col lg:flex-row">
         <div className="text-center w-full mt-10 lg:mt-0 lg:w-1/2 lg:text-left">
-          <h4 className="text-xl font-medium text-primary py-2 px-12 sm:px-0">
+          <h4 className="text-xl font-medium text-accent py-2 px-12 sm:px-0">
             Transparent transactions. Instant payouts.
           </h4>
           <h1 className="text-4xl font-bold">

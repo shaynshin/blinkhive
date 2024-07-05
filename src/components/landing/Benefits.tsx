@@ -60,7 +60,7 @@ const Benefits: React.FC = () => {
         </div>
       </div>
       <div className="mt-16 text-center">
-        <Link href="/dashboard/affiliate/browse" className="btn btn-primary btn-base btn-lg">
+        <Link href="/dashboard/affiliate/browse" className="btn btn-accent btn-base btn-lg">
           Get Started Now
         </Link>
       </div>
