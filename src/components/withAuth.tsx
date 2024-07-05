@@ -31,7 +31,7 @@ const withAuth = <P extends object>(
               },
             });
 
-            if (!response.ok) router.push("/dashboard/waitlist");
+            if (!response.ok) router.push("/dashboard/waitlist?role=merchant");
             setIsLoading(false);
           }
         } catch (error) {
