@@ -25,7 +25,8 @@
     "react": "^18",
     "react-dom": "^18",
     "swiper": "^11.1.4",
-    "tweetnacl": "^1.0.3"
+    "tweetnacl": "^1.0.3",
+    "zustand": "^4.5.4"
   },
   "devDependencies": {
     "@types/cookie": "^0.6.0",
