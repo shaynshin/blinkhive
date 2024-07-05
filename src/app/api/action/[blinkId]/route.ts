@@ -53,7 +53,10 @@ export async function GET(
       .single();
 
     if (fetchError) {
-      return NextResponse.json({ error: "Product not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Product not found" },
+        { status: 404, headers: ACTIONS_CORS_HEADERS }
+      );
     }
 
     const product = products.products as any;
@@ -117,7 +120,10 @@ export async function POST(
     const buyerEmail = searchParams.get("email");
 
     if (!buyerEmail || !isValidEmail(buyerEmail)) {
-      return NextResponse.json({ error: "Email invalid" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Email invalid" },
+        { status: 400, headers: ACTIONS_CORS_HEADERS }
+      );
     }
 
     const { data: blink, error: fetchError } = await supabase
@@ -137,7 +143,10 @@ export async function POST(
       .single();
 
     if (fetchError) {
-      return NextResponse.json({ error: "Product not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Product not found" },
+        { status: 404, headers: ACTIONS_CORS_HEADERS }
+      );
     }
 
     const product = blink.products as any;
@@ -166,10 +175,13 @@ export async function POST(
   } catch (error) {
     console.error("Error fetching action:", error);
     const message = "Failed to create transaction";
-    return new Response(message, {
-      status: 500,
-      headers: ACTIONS_CORS_HEADERS,
-    });
+    return NextResponse.json(
+      { message },
+      {
+        status: 500,
+        headers: ACTIONS_CORS_HEADERS,
+      }
+    );
   }
 }
 
