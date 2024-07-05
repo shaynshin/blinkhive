@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { UnifiedWalletButton, useWallet } from "@jup-ag/wallet-adapter";
 import { logout } from "@/lib/auth";
 import { getOrCreateAndSetStorageMessage } from "@/lib/walletAuth";
@@ -15,6 +15,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   );
   const loggedIn = useLoggedInStore((state) => state.loggedIn);
   const setLoggedIn = useLoggedInStore((state) => state.setLoggedIn);
+  const searchParams = useSearchParams();
+  const role = searchParams.get("role");
 
   const pathname = usePathname();
   const router = useRouter();
@@ -47,11 +49,13 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const hiddenNavitems = {
     merchant: [
       ...navItems.merchant,
-      { name: "Dashboard", path: "/dashboard/login" },
+      { name: "Login", path: "/dashboard/login" },
+      { name: "Waitlist", path: "/dashboard/waitlist?role=merchant" },
     ],
     affiliate: [
       ...navItems.affiliate,
-      { name: "Dashboard", path: "/dashboard/connect" },
+      { name: "Connect", path: "/dashboard/connect" },
+      { name: "Waitlist", path: "/dashboard/waitlist?role=affiliate" },
     ],
   };
 
@@ -64,6 +68,12 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       hiddenNavitems.merchant.some((item) => pathname.startsWith(item.path))
     ) {
       setActiveRole("merchant");
+    } else {
+      if (role === "affiliate") {
+        setActiveRole("affiliate");
+      } else if (role === "merchant") {
+        setActiveRole("merchant");
+      }
     }
   }, []);
 
@@ -87,7 +97,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   }, [wallet]);
 
   const handleLogout = () => {
-    console.log("ABC")
+    console.log("ABC");
     setLoggedIn(false);
     logout();
     router.push("/dashboard/login");
