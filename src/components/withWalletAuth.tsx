@@ -57,11 +57,11 @@ const withWalletAuth = <P extends object>(
       checkVerifiedAndWhitelist();
     }, [wallet]);
 
-    if (isLoading) {
-      return <LoadingAnimation />;
+    if (isLoading === false) {
+      return <WrappedComponent {...props} />;
     }
 
-    return <WrappedComponent {...props} />;
+    return <LoadingAnimation />;
   };
 
   // Set display name for the HOC for better debugging messages
