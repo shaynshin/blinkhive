@@ -104,12 +104,7 @@ function isValidEmail(email: string): boolean {
 export async function OPTIONS(_request: Request) {
   return new NextResponse(null, {
     status: 204,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, OPTIONS",
-      "Access-Control-Allow-Headers":
-        "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
-    },
+    headers: ACTIONS_CORS_HEADERS,
   });
 }
 
