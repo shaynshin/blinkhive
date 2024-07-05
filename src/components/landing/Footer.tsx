@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <g clip-path="url(#clip0_1_11)">
+          <g clipPath="url(#clip0_1_11)">
             <path
               d="M233.09 104.392C233.09 152.611 193.866 191.877 145.587 191.877C120.072 191.877 99.2595 171.118 99.2595 145.558H82.2493C82.2493 180.472 110.666 208.834 145.537 208.834C203.172 208.834 250 161.965 250 104.392H233.09Z"
               fill="#00CDB8"
@@ -35,21 +35,16 @@ const Footer: React.FC = () => {
             </clipPath>
           </defs>
         </svg>
-        <p className="font-bold mt-1">
-          <div className="flex-1">
-            <Link
-              href="/"
-              className="normal-case text-2xl mx-auto gap-2"
-            >
-              <p>
-                shill<span className="text-accent">.</span>
-                <span className="font-light">fm</span>
-              </p>
-            </Link>
-          </div>
+        <div className="font-bold mt-1">
+          <Link href="/" className="normal-case text-2xl mx-auto gap-2">
+            <p>
+              shill<span className="text-accent">.</span>
+              <span className="font-light">fm</span>
+            </p>
+          </Link>
           <br />
           Shill what you love and earn good money.
-        </p>
+        </div>
         <p>Copyright © {new Date().getFullYear()} - All right reserved</p>
       </aside>
       <nav>
