@@ -49,7 +49,7 @@ const Login: React.FC = () => {
               <div className="mx-auto loading loading-spinner loading-md" />
             ) : (
               <UnifiedWalletButton
-                buttonClassName="btn btn-primary"
+                buttonClassName="btn btn-primary !text-sm"
                 currentUserClassName="btn btn-primary"
               />
             )}
