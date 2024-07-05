@@ -67,24 +67,6 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
-  useEffect(() => {
-    const getMessage = async () => {
-      if (
-        wallet &&
-        wallet.connected &&
-        !wallet.disconnecting &&
-        wallet.publicKey
-      ) {
-        try {
-          await getOrCreateAndSetStorageMessage(wallet);
-        } catch (error) {
-          console.error("failed to sign message");
-        }
-      }
-    };
-    getMessage();
-  }, [wallet]);
-
   const handleLogout = () => {
     setLoggedIn(false);
     logout();

@@ -3,7 +3,10 @@
 import { useRouter } from "next/navigation";
 import { UnifiedWalletButton, useWallet } from "@jup-ag/wallet-adapter";
 import { useEffect, useState } from "react";
-import { getAndValidateStorageMessage } from "@/lib/walletAuth";
+import {
+  getAndValidateStorageMessage,
+  getOrCreateAndSetStorageMessage,
+} from "@/lib/walletAuth";
 
 const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -14,18 +17,16 @@ const Login: React.FC = () => {
     setIsLoading(true);
     const checkVerified = async () => {
       try {
-        if (!wallet || !wallet.publicKey) {
-          return;
+        if (wallet && wallet.publicKey && !wallet.disconnecting) {
+          const { verificationStr, signatureStr } =
+            await getOrCreateAndSetStorageMessage(wallet);
+
+          if (!verificationStr || !signatureStr) {
+            throw Error("No stored verifications");
+          }
+
+          router.push("/dashboard/affiliate");
         }
-
-        const { verificationStr, signatureStr } =
-          getAndValidateStorageMessage(wallet);
-
-        if (!verificationStr || !signatureStr) {
-          throw Error("No stored verifications");
-        }
-
-        router.push("/dashboard/affiliate");
       } catch (error) {
         console.error("Error checking authentication:", error);
       } finally {

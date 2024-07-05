@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useWallet } from "@jup-ag/wallet-adapter";
-import { getAndValidateStorageMessage } from "@/lib/walletAuth";
+import { getOrCreateAndSetStorageMessage } from "@/lib/walletAuth";
 
 const LoadingAnimation = () => (
   <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
@@ -27,7 +27,7 @@ const withWalletAuth = <P extends object>(
           }
 
           const { verificationStr, signatureStr } =
-            getAndValidateStorageMessage(wallet);
+            await getOrCreateAndSetStorageMessage(wallet);
 
           if (!verificationStr || !signatureStr) {
             throw Error("No stored verifications");
@@ -55,7 +55,7 @@ const withWalletAuth = <P extends object>(
       };
 
       checkVerifiedAndWhitelist();
-    }, [wallet.publicKey]);
+    }, [wallet]);
 
     if (isLoading) {
       return <LoadingAnimation />;
