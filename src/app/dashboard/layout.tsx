@@ -102,7 +102,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           <div className="flex-1 hidden sm:block">
             <Link
               href="/"
-              className="normal-case text-2xl font-bold flex gap-2"
+              className="normal-case text-2xl font-bold flex gap-2 text-neutral-300"
             >
               <svg
                 width={32}

@@ -12,7 +12,7 @@ const Header: React.FC = () => {
           <div className="flex-1">
             <Link
               href="/"
-              className="normal-case text-2xl font-bold flex gap-2"
+              className="normal-case text-2xl font-bold flex gap-2 text-neutral-300"
             >
               <svg
                 width={32}

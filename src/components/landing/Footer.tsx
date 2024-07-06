@@ -36,7 +36,7 @@ const Footer: React.FC = () => {
           </defs>
         </svg>
         <div className="font-bold mt-1">
-          <Link href="/" className="normal-case text-2xl mx-auto gap-2">
+          <Link href="/" className="normal-case text-2xl mx-auto gap-2 text-neutral-300">
             <p>
               shill<span className="text-accent">.</span>
               <span className="font-light">fm</span>
