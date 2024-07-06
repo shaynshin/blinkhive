@@ -9,7 +9,7 @@ export default function Home() {
           <PageHeader
             className="mb-12"
             title="shilling reimagined."
-            description="Tired of shilling and not getting anything in return? Us too. But it is all going to change."
+            description={`Tired of shilling and getting nothing in return? Us too. Now it is all going to change.`}
           >
             Waitlist <span className="text-gray-300 mx-1">·</span> Coming Soon
           </PageHeader>
