@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="max-w-3xl mx-auto">
           <div className="text-center py-8">
             <p className="text-sm text-gray-700 dark:text-gray-400">
-              © shill.fm - shilling reimagined.
+              © shill.fm
             </p>
           </div>
         </div>

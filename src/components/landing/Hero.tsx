@@ -18,7 +18,7 @@ const Hero: React.FC = () => {
             Transparent transactions. Instant payouts.
           </h4>
           <h1 className="text-4xl font-bold">
-            Next Generation Affiliate Marketing Platform Powered by{" "}
+            Next Generation Affiliate Platform Powered by{" "}
             <span className="solana-gradient">Solana</span>
           </h1>
           <p className="text-lg py-6">

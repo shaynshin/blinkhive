@@ -1,8 +1,3 @@
-export const metadata = {
-  title: "Home - Creative",
-  description: "Page description",
-};
-
 import PageHeader from "@/components/prelaunch/page-header";
 import SubscribeForm from "@/components/prelaunch/subscribe-form";
 

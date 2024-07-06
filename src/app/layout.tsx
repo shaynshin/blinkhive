@@ -5,9 +5,9 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "shill.fm - Web3 Affiliate Marketing Hub",
+  title: "shill.fm - Next-Gen Web3 Affiliate Hub",
   description:
-    "shill.fm is a leading affiliate marketing network with its own marketplace. We empower affiliates and brands to grow their sales on the blockchain.",
+    "shill.fm is a leading affiliate network with its own marketplace. We empower affiliates and brands to grow their sales on the blockchain.",
 };
 
 export default function RootLayout({

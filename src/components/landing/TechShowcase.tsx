@@ -13,7 +13,7 @@ const TechShowcase: React.FC = () => {
             Powered by Solana
           </span>
           <h2 className="text-3xl font-bold mb-4 text-base-content">
-            Next Generation Affiliate Marketing
+            Next Generation Affiliate Capabilities
           </h2>
         </div>
 
