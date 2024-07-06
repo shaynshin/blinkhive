@@ -16,7 +16,7 @@ export default function DefaultLayout({
   return (
     <Theme>
       <body
-        className={`antialiased bg-cyan-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200 tracking-tight`}
+        className={`antialiased bg-gray-900 text-gray-200 tracking-tight`}
       >
         <div className="relative flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip">
           <VerticalLines />

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Header() {
   return (
-    <header className="absolute top-4 md:top-6 w-full z-30 pb-4 md:pb-6 border-b [border-image:linear-gradient(to_right,transparent,theme(colors.cyan.300/.4),transparent)1] dark:[border-image:linear-gradient(to_right,transparent,theme(colors.cyan.300/.16),transparent)1] shadow-[0_1px_0_0_theme(colors.white/.2)] dark:shadow-none">
+    <header className="absolute top-4 md:top-6 w-full z-30 pb-4 md:pb-6 border-b [border-image:linear-gradient(to_right,transparent,theme(colors.cyan.300/.16),transparent)1] shadow-none">
       <div className="px-4 sm:px-6">
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center justify-center h-12">
