@@ -1,4 +1,5 @@
 import { PublicKey } from "@solana/web3.js";
+import { supabase } from "@/lib/supabase";
 
 const SLIPPAGE_BPS = 200; // 0.5%
 const PLATFORM_FEE_BPS = 100; // 1%
@@ -34,7 +35,7 @@ export async function getQuote(
     // Check if the response is not OK (status code is not in the range 200-299)
     if (!response.ok) {
       // Throw an error with the status text from the response
-      throw new Error(`Error fetching quote: ${response.statusText}`);
+      throw new Error(response.statusText);
     }
 
     // Parse the response body as JSON
@@ -111,40 +112,17 @@ export async function getFeeAccountAndSwapTransaction(
   }
 }
 
-export const validateAndGetCoinMintStr = (coin: string): string[] => {
-  const mint = whitelistMint[coin.toUpperCase() as keyof typeof whitelistMint]
-    ? whitelistMint[coin.toUpperCase() as keyof typeof whitelistMint]
-    : coin;
+export const validateAndGetCoinMintStr = async (coin: string) => {
+  const { data, error } = await supabase
+    .from("jupiter")
+    .select("name, symbol, mint, decimals, logo_uri")
+    .or(`symbol.ilike.${coin},mint.eq.${coin}`)
+    .single();
 
-  if (!Object.values(whitelistMint).includes(mint)) {
-    throw Error("mint not found in whitelist");
+  if (error) throw error;
+
+  if (!data) {
+    throw Error("Token not found");
   }
-
-  const name = Object.keys(whitelistMint).find(
-    (key) => whitelistMint[key as keyof typeof whitelistMint] === mint
-  );
-
-  if (!name) {
-    throw Error("name not found in whitelist");
-  }
-
-  return [mint, name];
-};
-
-export const whitelistMint = {
-  SOL: "So11111111111111111111111111111111111111112",
-  IO: "BZLbGTNCSFfoth2GYDtwr7e4imWzpR5jqcUuGEwr646K",
-  POPCAT: "7GCihgDB8fe6KNjn2MYtkzZcRjQy3t9GHdC8uHYmW2hr",
-  JUP: "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN",
-  RNDR: "rndrizKT3MK1iimdxRdWabcF7Zg7AR5T4nud4EkHBof",
-  JTO: "jtojtomepa8beP8AuQc6eXt5FriJwfFMwQx2v2f9mCL",
-  W: "85VBFQZC9TZkfaptBWjvUw7YbZjy52A6mjtPGjstQAmQ",
-  TNSR: "TNSRxcUxoT9xBG3de7PiJyTDYu7kskLqcpddxnEJAS6",
-  BONK: "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
-  WIF: "EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm",
-  RETARDIO: "6ogzHhzdrQr9Pgv6hZ2MNze7UrzBMAFyBBWUYp1Fhitx",
-  MICHI: "5mbK36SZ7J19An8jFochhQS4of8g6BwUjbeCSxBSoWdp",
-  PONKE: "5z3EqYQo9HiCEs3R84RCDMu2n7anpDMxRhdK8PSWmrRC",
-  MEW: "MEW1gQWJ3nEXg2qgERiKu7FAFj79PHvQVREQUzScPP5",
-  BILLY: "3B5wuUrMEi5yATD7on46hKfej3pfmd7t1RKgrsN3pump",
+  return data;
 };

@@ -22,12 +22,15 @@ export async function GET(
   try {
     const [coinIn, coinOut] = params.coinInCoinOut.split("-");
 
-    const [_mintIn, nameIn] = validateAndGetCoinMintStr(coinIn);
-    const [_mintOut, nameOut] = validateAndGetCoinMintStr(coinOut);
+    const { name: nameIn, symbol: symbolIn } = await validateAndGetCoinMintStr(
+      coinIn
+    );
+    const { name: nameOut, symbol: symbolOut } =
+      await validateAndGetCoinMintStr(coinOut);
 
     const response: ActionGetResponse = {
-      title: `Swap $${nameIn} → $${nameOut}`,
-      description: `Swap with the best rates, powered by Solana's number one aggregator — Jupiter. `,
+      title: `Swap $${symbolIn} → $${symbolOut}`,
+      description: `Exchange ${nameIn} for ${nameOut} at the best rates via Jupiter, Solana's top DEX aggregator.`,
       icon: "https://ucarecdn.com/bb6ebebc-a810-4943-906d-5e3c2ca17b8d/-/preview/880x880/-/quality/smart/-/format/auto/",
       label: "Buy now", // not displayed since `links.actions` are provided
       links: {
@@ -37,8 +40,8 @@ export async function GET(
             href: `/api/action/jup/${params.coinInCoinOut}?amount={amount}`,
             parameters: [
               {
-                name: `Amount of $${nameIn} to swap`, // field name
-                label: "amount", // text input placeholder
+                name: `amount`, // field name
+                label: `Amount of $${symbolIn} to swap`, // text input placeholder
               },
             ],
           },
@@ -84,13 +87,15 @@ export async function POST(
 
     const [coinIn, coinOut]: string[] = params.coinInCoinOut.split("-");
 
-    const [mintIn, _nameIn] = validateAndGetCoinMintStr(coinIn);
-    const [mintOut, _nameOut] = validateAndGetCoinMintStr(coinOut);
+    const { mint: mintIn, decimals: decimalsIn } =
+      await validateAndGetCoinMintStr(coinIn);
+    const { mint: mintOut } = await validateAndGetCoinMintStr(coinOut);
 
-    console.log(mintIn)
-    console.log(mintOut)
-
-    const quoteResponse = await getQuote(mintIn, mintOut, +amountIn);
+    const quoteResponse = await getQuote(
+      mintIn,
+      mintOut,
+      +amountIn * 10 ** decimalsIn
+    );
 
     const reqBody: ActionPostRequest = await req.json();
 
