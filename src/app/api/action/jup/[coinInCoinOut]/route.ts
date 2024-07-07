@@ -26,8 +26,8 @@ export async function GET(
     const [_mintOut, nameOut] = validateAndGetCoinMintStr(coinOut);
 
     const response: ActionGetResponse = {
-      title: `Swap $${nameIn} for $${nameOut}`,
-      description: `Powered by Jupiter. The number 1 spot aggregator on Solana.`,
+      title: `Swap $${nameIn} → $${nameOut}`,
+      description: `Swap with the best rates, powered by Solana's number one aggregator — Jupiter. `,
       icon: "https://ucarecdn.com/bb6ebebc-a810-4943-906d-5e3c2ca17b8d/-/preview/880x880/-/quality/smart/-/format/auto/",
       label: "Buy now", // not displayed since `links.actions` are provided
       links: {
@@ -37,7 +37,7 @@ export async function GET(
             href: `/api/action/jup/${params.coinInCoinOut}?amount={amount}`,
             parameters: [
               {
-                name: "amount", // field name
+                name: `Amount of $${nameIn} to swap`, // field name
                 label: "amount", // text input placeholder
               },
             ],
