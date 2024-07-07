@@ -132,7 +132,7 @@ export const validateAndGetCoinMintStr = (coin: string): string[] => {
 };
 
 export const whitelistMint = {
-  SOL: "3GLK3tz6S3NMTNQzxYEiFWATYoRi6yWGonrNouQN4778",
+  SOL: "So11111111111111111111111111111111111111112",
   IO: "BZLbGTNCSFfoth2GYDtwr7e4imWzpR5jqcUuGEwr646K",
   POPCAT: "7GCihgDB8fe6KNjn2MYtkzZcRjQy3t9GHdC8uHYmW2hr",
   JUP: "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN",

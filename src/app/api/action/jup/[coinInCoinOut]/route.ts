@@ -87,6 +87,9 @@ export async function POST(
     const [mintIn, _nameIn] = validateAndGetCoinMintStr(coinIn);
     const [mintOut, _nameOut] = validateAndGetCoinMintStr(coinOut);
 
+    console.log(mintIn)
+    console.log(mintOut)
+
     const quoteResponse = await getQuote(mintIn, mintOut, +amountIn);
 
     const reqBody: ActionPostRequest = await req.json();
