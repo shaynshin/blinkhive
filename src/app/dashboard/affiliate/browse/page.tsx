@@ -207,7 +207,7 @@ const ProductCard: React.FC<{
   };
 
   return (
-    <div className="card card-compact bg-base-300 shadow-2xl border border-base-100 hover:shadow-3xl transition-shadow duration-300">
+    <div className="card card-compact bg-base-100 shadow-2xl border border-base-100 hover:shadow-3xl transition-shadow duration-300">
       <figure>
         <a href={product.gumroadUrl} target="_blank" className="w-full">
           <Image

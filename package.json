@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.4",
     "@jup-ag/wallet-adapter": "^0.2.0",
     "@magic-sdk/admin": "^2.4.1",
     "@solana/actions": "^1.0.2",

@@ -38,7 +38,7 @@ const Login: React.FC = () => {
 
   return (
     <div className="absolute inset-0 flex items-center justify-center p-6">
-      <div className="card w-96 bg-base-200 shadow-xl">
+      <div className="card w-96 bg-base-100 shadow-xl">
         <div className="card-body">
           <h2 className="card-title justify-center mb-4">Login or Register</h2>
           <form onSubmit={handleLogin}>
