@@ -22,6 +22,17 @@ const nextConfig = {
     return [
       {
         source: "/buy/:path*",
+        has: [
+          {
+            type: "query",
+            key: "ref",
+          },
+        ],
+        destination: "/api/action/redirect?path=:path*&ref=:ref",
+        permanent: true,
+      },
+      {
+        source: "/buy/:path*",
         destination:
           "https://actions.dialect.to/?action=solana-action:" +
           baseUrl +

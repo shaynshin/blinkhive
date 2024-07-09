@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 
     // Insert the blink into the database
     const { data, error } = await supabase
-      .from("blinks")
+      .from("commerce_blinks")
       .insert({
         product_id: productId,
         user_pub_key: pubkey,

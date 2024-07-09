@@ -32,7 +32,7 @@ const ProductBrowse = () => {
       try {
         setIsButtonLoading(true);
 
-        const response = await fetch("/api/blinks", {
+        const response = await fetch("/api/blinks/commerce", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -84,7 +84,7 @@ const ProductBrowse = () => {
       signatureStr
     ) {
       try {
-        const response = await fetch(`/api/blinks/user`, {
+        const response = await fetch(`/api/blinks/commerce/user`, {
           headers: {
             "Content-Type": "application/json",
             "X-Verification": verificationStr,

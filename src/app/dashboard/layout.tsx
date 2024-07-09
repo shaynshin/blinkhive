@@ -135,8 +135,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       </div>
       <div className="drawer-side shadow-lg">
         <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
-        <ul className="menu py-3 px-4 w-80 min-h-[calc(100vh-4rem)] bg-base-100 text-base-content sm:text-base ">
-          <div className="flex hidden pl-2 pb-2 sm:block">
+        <ul className="menu py-3 px-4 w-80 min-h-screen lg:min-h-[calc(100vh-4rem)] bg-base-100 text-base">
+          <div className="flex pl-2 pb-2">
             <Link
               href={`/dashboard/${activeRole}`}
               className="normal-case text-2xl font-bold flex gap-2 text-neutral-300 h-12"
@@ -181,12 +181,12 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             <li key={item.path}>
               <Link
                 href={item.path}
-                className={pathname === item.path ? "active" : ""}
+                className={pathname.startsWith(item.path) ? "active" : ""}
                 onClick={closeDrawer}
               >
                 {<item.icon className="w-5 h-5" />}
                 {item.name}
-                {pathname === item.path ? (
+                {pathname.startsWith(item.path) ? (
                   <span
                     className="absolute inset-y-0 left-0 w-1 rounded-tr-md rounded-br-md bg-primary "
                     aria-hidden="true"

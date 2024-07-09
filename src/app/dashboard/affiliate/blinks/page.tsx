@@ -148,7 +148,7 @@ const ProductManagement = () => {
     ) {
       try {
         setIsFetchLoading(true);
-        const response = await fetch("/api/blinks/user", {
+        const response = await fetch("/api/blinks/commerce/user", {
           headers: {
             "Content-Type": "application/json",
             "X-Verification": verificationStr,

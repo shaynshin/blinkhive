@@ -5,22 +5,33 @@ import {
   ActionPostResponse,
   ACTIONS_CORS_HEADERS,
 } from "@solana/actions";
-import { PublicKey } from "@solana/web3.js";
+import {
+  PublicKey,
+  SystemProgram,
+  TransactionMessage,
+  VersionedTransaction,
+} from "@solana/web3.js";
 
 import {
-  getFeeAccountAndSwapTransaction,
+  deserializeInstruction,
+  fetchGenPubkey,
+  getAddressLookupTableAccounts,
+  getFeeAccountAndSwapIxs,
   getQuote,
   validateAndGetCoinMintStr,
 } from "@/lib/jupiter";
+import { connection } from "@/lib/solana";
 
 const adminJupRefKey = new PublicKey(process.env.ADMIN_JUP_REF_KEY!);
 
 export async function GET(
-  _request: Request,
+  req: Request,
   { params }: { params: { coinInCoinOut: string } }
 ) {
   try {
     const [coinIn, coinOut] = params.coinInCoinOut.split("-");
+    const { searchParams } = new URL(req.url);
+    const refPubkey = searchParams.get("ref");
 
     const { name: nameIn, symbol: symbolIn } = await validateAndGetCoinMintStr(
       coinIn
@@ -37,7 +48,9 @@ export async function GET(
         actions: [
           {
             label: `Swap Now`, // button text
-            href: `/api/action/jup/${params.coinInCoinOut}?amount={amount}`,
+            href: `/api/action/jup/${params.coinInCoinOut}?${
+              refPubkey ? `ref=${refPubkey}&` : ""
+            }amount={amount}`,
             parameters: [
               {
                 name: `amount`, // field name
@@ -77,6 +90,7 @@ export async function POST(
   try {
     const { searchParams } = new URL(req.url);
     const amountIn = searchParams.get("amount");
+    const refPubkey = searchParams.get("ref");
 
     if (!amountIn || +amountIn <= 0) {
       return NextResponse.json(
@@ -98,15 +112,55 @@ export async function POST(
     );
 
     const reqBody: ActionPostRequest = await req.json();
+    const userPubkey = new PublicKey(reqBody.account);
 
-    const tx = await getFeeAccountAndSwapTransaction(
+    const {
+      computeBudgetInstructions, // The necessary instructions to setup the compute budget.
+      setupInstructions, // Setup missing ATA for the users.
+      swapInstruction: swapInstructionPayload, // The actual swap instruction.
+      cleanupInstruction, // Unwrap the SOL if `wrapAndUnwrapSol = true`.
+      addressLookupTableAddresses, // The lookup table addresses that you can use if you are using versioned transaction.
+    } = await getFeeAccountAndSwapIxs(
       adminJupRefKey,
       new PublicKey(mintOut),
       quoteResponse,
-      new PublicKey(reqBody.account)
+      userPubkey
     );
+
+    const addressLookupTableAccounts = await getAddressLookupTableAccounts(
+      addressLookupTableAddresses
+    );
+
+    const instructions = [
+      ...computeBudgetInstructions.map(deserializeInstruction),
+      ...setupInstructions.map(deserializeInstruction),
+      deserializeInstruction(swapInstructionPayload),
+    ];
+
+    if (cleanupInstruction) {
+      instructions.push(deserializeInstruction(cleanupInstruction));
+    }
+
+    if (refPubkey) {
+      const genPubkeyStr = await fetchGenPubkey(refPubkey, mintOut);
+      const refTransferIx = SystemProgram.transfer({
+        fromPubkey: userPubkey,
+        toPubkey: new PublicKey(genPubkeyStr),
+        lamports: 898888,
+      });
+      instructions.push(refTransferIx);
+    }
+
+    const blockhash = (await connection.getLatestBlockhash()).blockhash;
+    const messageV0 = new TransactionMessage({
+      payerKey: userPubkey,
+      recentBlockhash: blockhash,
+      instructions,
+    }).compileToV0Message(addressLookupTableAccounts);
+    const transaction = new VersionedTransaction(messageV0);
+
     const response: ActionPostResponse = {
-      transaction: tx,
+      transaction: Buffer.from(transaction.serialize()).toString("base64"),
     };
 
     return NextResponse.json(response, { headers: ACTIONS_CORS_HEADERS });

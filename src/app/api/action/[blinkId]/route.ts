@@ -6,7 +6,6 @@ import {
   ACTIONS_CORS_HEADERS,
 } from "@solana/actions";
 import {
-  Connection,
   Keypair,
   PublicKey,
   SystemProgram,
@@ -21,6 +20,7 @@ import {
 } from "@solana/spl-token";
 
 import { supabase } from "@/lib/supabase";
+import { connection } from "@/lib/solana";
 
 // USDC
 const TOKEN_MINT = new PublicKey(
@@ -38,16 +38,13 @@ const signerKeypair = Keypair.fromSecretKey(signerSecretKey);
 
 const adminPubKey = new PublicKey(process.env.ADMIN_PUBLIC_KEY!);
 
-// Initialize connection to Solana
-const connection = new Connection(process.env.SOLANA_RPC_URL!);
-
 export async function GET(
   _request: Request,
   { params }: { params: { blinkId: string } }
 ) {
   try {
     const { data: products, error: fetchError } = await supabase
-      .from("blinks")
+      .from("commerce_blinks")
       .select("products (*)")
       .eq("id", params.blinkId)
       .single();
@@ -127,7 +124,7 @@ export async function POST(
     }
 
     const { data: blink, error: fetchError } = await supabase
-      .from("blinks")
+      .from("commerce_blinks")
       .select(
         `id, 
         user_pub_key, 

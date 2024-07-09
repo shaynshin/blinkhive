@@ -18,7 +18,7 @@ export async function GET(req: Request) {
     }
 
     const { data, error } = await supabase
-      .from("blinks")
+      .from("commerce_blinks")
       .select("id, products (*)")
       .eq("user_pub_key", pubkey);
 

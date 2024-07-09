@@ -1,8 +1,22 @@
-import { PublicKey } from "@solana/web3.js";
+import {
+  AddressLookupTableAccount,
+  Keypair,
+  PublicKey,
+  TransactionInstruction,
+} from "@solana/web3.js";
 import { supabase } from "@/lib/supabase";
+import { connection } from "./solana";
 
 const SLIPPAGE_BPS = 200; // 0.5%
 const PLATFORM_FEE_BPS = 100; // 1%
+
+export type JupiterAllowedTokens = {
+  name: string;
+  symbol: string;
+  mint: string;
+  decimals: string;
+  logoURI: string;
+};
 
 // Function to swap SOL to USDC with input 0.1 SOL and 0.5% slippage
 export async function getQuote(
@@ -51,7 +65,7 @@ export async function getQuote(
 }
 
 // Function to find the fee account and get serialized transactions for the swap
-export async function getFeeAccountAndSwapTransaction(
+export async function getFeeAccountAndSwapIxs(
   referralAccountPubkey: PublicKey,
   mint: PublicKey,
   quoteResponse: any,
@@ -64,7 +78,7 @@ export async function getFeeAccountAndSwapTransaction(
     // - referralAccountPubkey.toBuffer(): The buffer representation of the referral account public key
     // - mint.toBuffer(): The buffer representation of the token mint
     // - new PublicKey("REFER4ZgmyYx9c6He5XfaTMiGfdLwRnkV4RPp9t9iF3"): The public key of the Referral Program
-    const [feeAccount] = await PublicKey.findProgramAddressSync(
+    const [feeAccount] = PublicKey.findProgramAddressSync(
       [
         Buffer.from("referral_ata"),
         referralAccountPubkey.toBuffer(),
@@ -72,8 +86,6 @@ export async function getFeeAccountAndSwapTransaction(
       ],
       new PublicKey("REFER4ZgmyYx9c6He5XfaTMiGfdLwRnkV4RPp9t9iF3")
     );
-
-    console.log(feeAccount.toBase58());
 
     // Construct the request body for the swap API
     const requestBody = {
@@ -84,31 +96,25 @@ export async function getFeeAccountAndSwapTransaction(
     };
 
     // Perform the fetch request to the swap API
-    const response = await fetch("https://quote-api.jup.ag/v6/swap", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody), // Convert the request body to a JSON string
-    });
+    const instructions = await (
+      await fetch("https://quote-api.jup.ag/v6/swap-instructions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody), // Convert the request body to a JSON string
+      })
+    ).json();
 
-    // Check if the response is not OK (status code is not in the range 200-299)
-    if (!response.ok) {
-      // Throw an error with the status text from the response
-      throw new Error(`Error performing swap: ${response.statusText}`);
+    if (instructions.error) {
+      throw new Error("Failed to get swap instructions: " + instructions.error);
     }
 
-    // Parse the response body as JSON to get the swap transaction
-    const { swapTransaction } = await response.json();
-
-    // Log the swap transaction to the console
-    console.log({ swapTransaction });
-
-    return swapTransaction; // Return the swap transaction
+    return instructions; // Return the swap transaction
   } catch (error) {
     // Catch any errors that occur during the fetch request or JSON parsing
     // Log the error to the console
-    console.error("Failed to get fee account and swap transaction:", error);
+    console.error("Failed to get fee account and swap instructions:", error);
   }
 }
 
@@ -125,4 +131,82 @@ export const validateAndGetCoinMintStr = async (coin: string) => {
     throw Error("Token not found");
   }
   return data;
+};
+
+export const deserializeInstruction = (instruction: any) => {
+  return new TransactionInstruction({
+    programId: new PublicKey(instruction.programId),
+    keys: instruction.accounts.map((key: any) => ({
+      pubkey: new PublicKey(key.pubkey),
+      isSigner: key.isSigner,
+      isWritable: key.isWritable,
+    })),
+    data: Buffer.from(instruction.data, "base64"),
+  });
+};
+
+export const getAddressLookupTableAccounts = async (
+  keys: string[]
+): Promise<AddressLookupTableAccount[]> => {
+  const addressLookupTableAccountInfos =
+    await connection.getMultipleAccountsInfo(
+      keys.map((key) => new PublicKey(key))
+    );
+
+  return addressLookupTableAccountInfos.reduce((acc, accountInfo, index) => {
+    const addressLookupTableAddress = keys[index];
+    if (accountInfo) {
+      const addressLookupTableAccount = new AddressLookupTableAccount({
+        key: new PublicKey(addressLookupTableAddress),
+        state: AddressLookupTableAccount.deserialize(accountInfo.data),
+      });
+      acc.push(addressLookupTableAccount);
+    }
+
+    return acc;
+  }, new Array<AddressLookupTableAccount>());
+};
+
+export const fetchGenPubkey = async (refPubkey: string, mint: string) => {
+  try {
+    new PublicKey(refPubkey);
+    // Try to insert a new row
+    const { data: insertedData, error: insertError } = await supabase
+      .from("jupiter_reference")
+      .insert({
+        pub_key: refPubkey,
+        reward_mint: mint,
+        gen_pub_key: Keypair.generate().publicKey.toBase58(),
+      })
+      .select("gen_pub_key")
+      .single();
+
+    if (insertError && insertError.code === "23505") {
+      // Unique violation error code
+      // If insert fails due to unique constraint, fetch the existing row
+      const { data: existingData, error: fetchError } = await supabase
+        .from("jupiter_reference")
+        .select("gen_pub_key")
+        .eq("pub_key", refPubkey)
+        .eq("reward_mint", mint)
+        .single();
+
+      if (fetchError) {
+        throw Error("Error fetching existing data: " + fetchError.message);
+      }
+
+      if (!existingData) {
+        throw Error("No existing data found after insert failed");
+      }
+
+      return existingData.gen_pub_key;
+    } else if (insertError) {
+      throw Error("Error in insert operation: " + insertError.message);
+    }
+
+    return insertedData.gen_pub_key;
+  } catch (error) {
+    console.error(error);
+    return;
+  }
 };
