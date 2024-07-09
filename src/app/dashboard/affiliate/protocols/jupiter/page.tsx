@@ -180,7 +180,8 @@ const DropdownFull: React.FC<{
               <span>
                 {allowedTokens && (
                   <div className="flex items-center gap-4">
-                    <img
+                    <Image
+                      alt="Coin image"
                       src={allowedTokens[selectedIdx].logoURI}
                       className="w-4 h-4 rounded-full"
                     />
@@ -224,7 +225,8 @@ const DropdownFull: React.FC<{
                             }}
                           >
                             <div className="flex items-center gap-4">
-                              <img
+                              <Image
+                                alt="Coin image"
                                 src={option.logoURI}
                                 className="w-4 h-4 rounded-full"
                               />
