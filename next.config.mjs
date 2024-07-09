@@ -5,9 +5,7 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     remotePatterns: [
-      { hostname: "public-files.gumroad.com" },
-      { hostname: "i.ibb.co" },
-      { hostname: "assets.gumroad.com" },
+      { hostname: "*" },
     ],
   },
   async rewrites() {
