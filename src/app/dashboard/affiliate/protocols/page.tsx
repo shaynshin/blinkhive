@@ -93,8 +93,8 @@ const ProtocolCard = ({
     <div className="h-full w-full pb-2">{children}</div>
     <div className="card-actions justify-between">
       <div className="flex gap-2">
-        {products.map((product) => (
-          <div className="badge badge-outline">{product}</div>
+        {products.map((product, idx) => (
+          <div className="badge badge-outline" key={idx}>{product}</div>
         ))}
       </div>
 
