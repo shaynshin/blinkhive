@@ -5,7 +5,7 @@ export async function GET(req: Request) {
   const path = searchParams.get("path");
   const ref = searchParams.get("ref");
 
-  const baseUrl = "http://localhost:3000";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
   let destination = `https://actions.dialect.to/?action=solana-action:${encodeURIComponent(
     `${baseUrl}/api/action/${path}`
   )}`;
