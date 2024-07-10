@@ -172,7 +172,7 @@ export const fetchGenPubkey = async (refPubkey: string, mint: string) => {
     new PublicKey(refPubkey);
     // Try to insert a new row
     const { data: insertedData, error: insertError } = await supabase
-      .from("jupiter_reference")
+      .from("token_rewards")
       .insert({
         pub_key: refPubkey,
         reward_mint: mint,
@@ -185,7 +185,7 @@ export const fetchGenPubkey = async (refPubkey: string, mint: string) => {
       // Unique violation error code
       // If insert fails due to unique constraint, fetch the existing row
       const { data: existingData, error: fetchError } = await supabase
-        .from("jupiter_reference")
+        .from("token_rewards")
         .select("gen_pub_key")
         .eq("pub_key", refPubkey)
         .eq("reward_mint", mint)
