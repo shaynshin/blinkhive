@@ -177,6 +177,7 @@ export const fetchGenPubkey = async (refPubkey: string, mint: string) => {
         pub_key: refPubkey,
         reward_mint: mint,
         gen_pub_key: Keypair.generate().publicKey.toBase58(),
+        total_claimed_amount: 0,
       })
       .select("gen_pub_key")
       .single();
